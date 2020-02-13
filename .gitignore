@@ -1,0 +1,9 @@
+﻿/.vs
+
+/packages
+
+/Database
+/Web
+
+**/bin/
+**/obj/

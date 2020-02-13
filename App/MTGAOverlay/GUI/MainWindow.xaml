@@ -1,0 +1,34 @@
+﻿<Window x:Class="MindSculptor.App.MtgaOverlay.GUI.MainWindow"
+        x:ClassModifier="internal"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MindSculptor.App.MtgaOverlay.GUI"
+        mc:Ignorable="d"
+        Title="MTGA Overlay"
+        AllowsTransparency="True"
+        WindowStyle="None"
+        ResizeMode="CanMinimize"
+        WindowStartupLocation="CenterScreen"
+        WindowState="Maximized"
+        Topmost="True"
+        Initialized="Window_Initialized">
+    <Window.Background>
+        <SolidColorBrush Color="#FFB0B0B0" Opacity="0"/>
+    </Window.Background>
+    <Grid x:Name="MainGrid">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="500*"/>
+            <ColumnDefinition Width="3340*"/>
+        </Grid.ColumnDefinitions>
+        <Grid x:Name="ContentGrid" Grid.Column="1"/>
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <StackPanel x:Name="LogDisplayPanel" Grid.Row="1" Orientation="Vertical" Margin="30,50,20,300"/>
+        </Grid>
+    </Grid>
+</Window>
