@@ -1,6 +1,6 @@
 ﻿using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using MindSculptor.DataAccess.DataContext;
+using MindSculptor.DataAccess.Context;
 using MindSculptor.DataAccess.Modelled.Schemas;
 using MindSculptor.Tools.Applications.DataContextGenerator.Extensions;
 using MindSculptor.Tools.CodeGeneration.Declarations;
@@ -17,8 +17,8 @@ namespace MindSculptor.Tools.Applications.DataContextGenerator.FileGenerators.Sc
         {
             this.schemaDefinition = schemaDefinition;
 
-            AddParameter(typeof(DataContext), nameof(DataContext).FormatAsVariableName());
-            AddBaseConstructorArguments(nameof(DataContext).FormatAsVariableName());
+            AddParameter(typeof(DatabaseContext), nameof(DatabaseContext).FormatAsVariableName());
+            AddBaseConstructorArguments(nameof(DatabaseContext).FormatAsVariableName());
         }
 
         public static SchemaConstructorDeclaration Create(Schema schemaDefinition)

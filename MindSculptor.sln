@@ -33,7 +33,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MtgaLinker", "Tools\Applica
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MTGAOverlay", "App\MTGAOverlay\MTGAOverlay.csproj", "{6BAD6E98-9341-4ABF-A4A1-83C3708BFA37}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataExporter", "Tools\Applications\DataExporter\DataExporter.csproj", "{C0AD957B-5D05-4DE8-A7F6-3ED7986A0635}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataExporter", "Tools\Applications\DataExporter\DataExporter.csproj", "{C0AD957B-5D05-4DE8-A7F6-3ED7986A0635}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MindSculptor.Tools.Data", "Tools\MindSculptor.Tools.Data\MindSculptor.Tools.Data.csproj", "{7AB59887-1EEE-4DD7-A68C-EA73C22F7FC6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -89,6 +91,10 @@ Global
 		{C0AD957B-5D05-4DE8-A7F6-3ED7986A0635}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C0AD957B-5D05-4DE8-A7F6-3ED7986A0635}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C0AD957B-5D05-4DE8-A7F6-3ED7986A0635}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7AB59887-1EEE-4DD7-A68C-EA73C22F7FC6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7AB59887-1EEE-4DD7-A68C-EA73C22F7FC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7AB59887-1EEE-4DD7-A68C-EA73C22F7FC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7AB59887-1EEE-4DD7-A68C-EA73C22F7FC6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -107,6 +113,7 @@ Global
 		{E9D102BE-FD2D-46F8-A2BF-78ADA4B0249C} = {3E3F1F24-4381-46E8-9A6C-59D980C56CA0}
 		{6BAD6E98-9341-4ABF-A4A1-83C3708BFA37} = {57D6AB4D-6512-4B54-B21A-FA91180D3406}
 		{C0AD957B-5D05-4DE8-A7F6-3ED7986A0635} = {3E3F1F24-4381-46E8-9A6C-59D980C56CA0}
+		{7AB59887-1EEE-4DD7-A68C-EA73C22F7FC6} = {B726169E-517E-4B59-892E-B216756F446B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {590DD477-A99B-4731-A6DC-203E7C7DB11D}

@@ -1,6 +1,6 @@
 ﻿using MindSculptor.App.AppDataContext;
 using MindSculptor.App.AppDataModel;
-using MindSculptor.DataAccess.DataContext;
+using MindSculptor.DataAccess.Context;
 using MindSculptor.DataAccess.Modelled.Records;
 using MindSculptor.DataAccess.Modelled.Records.Fields;
 using MindSculptor.Tools.Applications.DataExporter.Extensions;
@@ -16,7 +16,7 @@ namespace MindSculptor.Tools.Applications.DataExporter
 {
     class Program
     {
-        static async Task Main(string[] args)
+        static async Task Main()
             => await new Program().RunAsync().ConfigureAwait(false);
 
         private async Task RunAsync()
@@ -30,41 +30,32 @@ namespace MindSculptor.Tools.Applications.DataExporter
                 .SelectMany(schema => schema.Records)
                 .OrderByDependencies();
 
-            try
-            {
-                await dbConnection.OpenAsync();
-                var dataContext = AppDataContext.Create(dbConnection);
-
+            await using (var dataContext = AppDataContext.Create(DBConnectionString))
                 foreach (var recordDefinition in orderedRecordDefinitions)
                 {
                     var schema = dataContext.GetType().GetProperty(recordDefinition.Schema.Name)?.GetValue(dataContext)!;
-                    var records = schema.GetType().GetProperty(recordDefinition.TableName)?.GetValue(schema) as IAsyncEnumerable<DataContextRecord>;
+                    var records = schema.GetType().GetProperty(recordDefinition.TableName)?.GetValue(schema) as IAsyncEnumerable<DatabaseRecord>;
 
                     var fieldNames = recordDefinition.Fields
                         .Select(field => field.Name);
 
-                    await using (var enumerator = records!.GetAsyncEnumerator())
-                        while (await enumerator.MoveNextAsync().ConfigureAwait(false))
-                        {
-                            await streamWriter.WriteLineAsync($"INSERT INTO [{recordDefinition.Schema.Name}].[{recordDefinition.TableName}] ({string.Join(", ", fieldNames)}) VALUES")
-                                .ConfigureAwait(false);
-                            await streamWriter.WriteAsync($"\t{GetValuesLine(dataContext, recordDefinition, enumerator.Current)}")
+                    await using var enumerator = records!.GetAsyncEnumerator();
+                    while (await enumerator.MoveNextAsync().ConfigureAwait(false))
+                    {
+                        await streamWriter.WriteLineAsync($"INSERT INTO [{recordDefinition.Schema.Name}].[{recordDefinition.TableName}] ({string.Join(", ", fieldNames)}) VALUES")
+                            .ConfigureAwait(false);
+                        await streamWriter.WriteAsync($"\t{GetValuesLine(dataContext, recordDefinition, enumerator.Current)}")
+                            .ConfigureAwait(false);
+
+                        for (int i = 1; i < 1000 && await enumerator.MoveNextAsync().ConfigureAwait(false); i++)
+                            await streamWriter.WriteAsync($",\n\t{GetValuesLine(dataContext, recordDefinition, enumerator.Current)}")
                                 .ConfigureAwait(false);
 
-                            for (int i = 1; i < 1000 && await enumerator.MoveNextAsync().ConfigureAwait(false); i++)
-                                await streamWriter.WriteAsync($",\n\t{GetValuesLine(dataContext, recordDefinition, enumerator.Current)}")
-                                    .ConfigureAwait(false);
-
-                            await streamWriter.WriteLineAsync($";\n").ConfigureAwait(false);
-                        }
+                        await streamWriter.WriteLineAsync($";\n").ConfigureAwait(false);
+                    }
                 }
-            }
-            finally
-            {
-                await dbConnection.CloseAsync();
-            }
 
-            static string GetValuesLine(AppDataContext dataContext, RecordDefinition recordDefinition, DataContextRecord record)
+            static string GetValuesLine(AppDataContext dataContext, RecordDefinition recordDefinition, DatabaseRecord record)
             {
                 var values = recordDefinition.Fields.Select(fieldDefinition =>
                 {
@@ -73,23 +64,19 @@ namespace MindSculptor.Tools.Applications.DataExporter
                         return $"null";
                     if (value == null)
                         throw new Exception("Unexpected null value.");
-                    switch (fieldDefinition)
+                    return fieldDefinition switch
                     {
-                        case TextField _:
-                            return $"'{(value as string)!.Replace("'", "''")}'";
-                        case IntegerField _:
-                            return value.ToString();
-                        case BooleanField _:
-                            return (bool)value ? "1" : "0";
-                        default:
-                            return $"'{value}'";
-                    }
+                        TextField _     => $"'{(value as string)!.Replace("'", "''")}'",
+                        IntegerField _  => value.ToString(),
+                        BooleanField _  => (bool)value ? "1" : "0",
+                        _               => $"'{value}'",
+                    };
                 });
                 return $"({string.Join(", ", values)})";
             }
         }
 
         private const string ExportFilePath = @"C:\Users\mmhar\source\repos\supreme-dollop\Database\DataExport.sql";
-        private const string DBConnectionString = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=MindSculptorApp002;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+        private const string DBConnectionString = @"Server=localhost\SQLEXPRESS;Database=MindSculptorApp;Trusted_Connection=True;";
     }
 }

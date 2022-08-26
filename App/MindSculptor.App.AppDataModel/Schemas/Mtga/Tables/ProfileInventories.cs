@@ -47,6 +47,12 @@ namespace MindSculptor.App.AppDataModel.Schemas.Mtga.Tables
             MinimumValue = 0
         };
 
+        public static DecimalField VaultProgress = new DecimalField.Definition
+        {
+            Precision = 6,
+            Scale = 1
+        };
+
         public static PrimaryKey PK = new PrimaryKey.Definition
         {
             Fields = ProfileId

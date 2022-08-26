@@ -16,9 +16,9 @@ namespace MindSculptor.App.AppDataModel.Schemas.Mtga.Tables
             IsReadOnly = true
         };
 
-        public static IdField BasePrintingId = new IdField.Definition
+        public static IdField DigitalCardId = new IdField.Definition
         {
-            MappedField = Cards.Id,
+            MappedField = DigitalCards.Id,
             IsReadOnly = true
         };
 
@@ -30,7 +30,7 @@ namespace MindSculptor.App.AppDataModel.Schemas.Mtga.Tables
 
         public static PrimaryKey PK = new PrimaryKey.Definition
         {
-            Fields = FieldReference.List(ProfileId, BasePrintingId)
+            Fields = FieldReference.List(ProfileId, DigitalCardId)
         };
 
         public static ForeignKey FK1 = new ForeignKey.Definition
@@ -41,8 +41,8 @@ namespace MindSculptor.App.AppDataModel.Schemas.Mtga.Tables
 
         public static ForeignKey FK2 = new ForeignKey.Definition
         {
-            Fields = BasePrintingId,
-            ReferencedKey = Cards.PK
+            Fields = DigitalCardId,
+            ReferencedKey = DigitalCards.PK
         };
     }
 }

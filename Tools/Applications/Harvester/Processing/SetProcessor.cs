@@ -1,7 +1,8 @@
 ﻿using MindSculptor.App.AppDataContext;
 using MindSculptor.App.AppDataContext.Schemas.Cards.Tables.Records;
-using MindSculptor.DataAccess.DataContext.Query;
+using MindSculptor.DataAccess.Context.Query;
 using MindSculptor.Tools.Applications.Harvester.Processing.Gatherer;
+using MindSculptor.Tools.Data;
 using MindSculptor.Tools.Extensions;
 using System;
 using System.Collections.Generic;
@@ -35,37 +36,37 @@ namespace MindSculptor.Tools.Applications.Harvester.Processing
             this.setRecord = setRecord;
             this.progress = progress;
 
-            cardTypeRecordLookup = AsyncCachedLookup<string, CardTypeRecord>.Create(
+            cardTypeRecordLookup = new AsyncCachedLookup<string, CardTypeRecord>(
                 key => dataContext.Cards.CardTypes
                     .QueryWhere(cardType => cardType.Value == key)
                     .SingleAsync());
 
-            superTypeRecordLookup = AsyncCachedLookup<string, SuperTypeRecord>.Create(
+            superTypeRecordLookup = new AsyncCachedLookup<string, SuperTypeRecord>(
                 key => dataContext.Cards.SuperTypes
                     .QueryWhere(superType => superType.Value == key)
                     .TryGetSingleAsync());
-            mainTypeRecordLookup = AsyncCachedLookup<string, MainTypeRecord>.Create(
+            mainTypeRecordLookup = new AsyncCachedLookup<string, MainTypeRecord>(
                 key => dataContext.Cards.MainTypes
                     .QueryWhere(mainType => mainType.Value == key)
                     .TryGetSingleAsync());
-            subTypeRecordLookup = AsyncCachedLookup<string, SubTypeRecord>.Create(
+            subTypeRecordLookup = new AsyncCachedLookup<string, SubTypeRecord>(
                 key => dataContext.Cards.SubTypes
                     .QueryWhere(sub => sub.Value == key)
                     .TryGetSingleAsync());
-            manaSymbolRecordLookup = AsyncCachedLookup<string, ManaSymbolRecord>.Create(
+            manaSymbolRecordLookup = new AsyncCachedLookup<string, ManaSymbolRecord>(
                 key => dataContext.Cards.ManaSymbols
                     .QueryWhere(manaSymbol => manaSymbol.Code == key)
                     .TryGetSingleAsync());
 
-            rarityTypeRecordLookup = AsyncCachedLookup<string, RarityTypeRecord>.Create(
+            rarityTypeRecordLookup = new AsyncCachedLookup<string, RarityTypeRecord>(
                 key => dataContext.Cards.RarityTypes
                     .QueryWhere(rarityType => rarityType.Value == key)
                     .SingleAsync());
-            subsetTypeRecordLookup = AsyncCachedLookup<string, SubsetTypeRecord>.Create(
+            subsetTypeRecordLookup = new AsyncCachedLookup<string, SubsetTypeRecord>(
                 key => dataContext.Cards.SubsetTypes
                     .QueryWhere(subsetType => subsetType.Value == key)
                     .SingleAsync());
-            printingTypeRecordLookup = AsyncCachedLookup<string, PrintingTypeRecord>.Create(
+            printingTypeRecordLookup = new AsyncCachedLookup<string, PrintingTypeRecord>(
                 key => dataContext.Cards.PrintingTypes
                     .QueryWhere(printingType => printingType.Value == key)
                     .SingleAsync());
@@ -75,6 +76,27 @@ namespace MindSculptor.Tools.Applications.Harvester.Processing
             => new SetProcessor(dataContext, setRecord, progress);
 
         public async Task ProcessAsync()
+        {
+            ReportProgress(0, 0, "Initializing...");
+
+            var dataMapper = new GathererCardDataMapper(dataContext, progress, setRecord.Code, setRecord.CodeExtension, setRecord.Name);
+            var cardData = await dataMapper.LoadAllCardData().ConfigureAwait(false);
+
+            var processedCount = 0;
+            var totalCount = cardData.Count();
+
+            var cardDataProcessor = new CardDataProcessor(dataContext);
+            foreach(var card in cardData)
+            {
+                var cardName = card.PrimaryCardFace.Name + (card.HasSecondaryCardFace ? $" // {card.SecondaryCardFace.Name}" : string.Empty);
+                ReportProgress(++processedCount, totalCount, $"Updating records...");
+                await cardDataProcessor.ProcessCard(card).ConfigureAwait(false);
+            }
+
+            ReportProgress(1, 1, "Completed!");
+        }
+
+        public async Task ProcessAsyncOld()
         {
             ReportProgress(0, 0, "Initializing...");
             var setAdapter = GathererSetAdapter.Create(setRecord.Name);
@@ -152,24 +174,24 @@ namespace MindSculptor.Tools.Applications.Harvester.Processing
 
                 var requiredSuperTypeRecords = await cardAdapter.Types
                     .SelectAsync(async type => await superTypeRecordLookup.TryGetValueAsync(type).ConfigureAwait(false))
-                    .Where(result => result.Success)
-                    .Select(result => result.Value)
+                    .WhereAsync(result => result.Success)
+                    .SelectAsync(result => result.Value)
                     .ToListAsync()
                     .ConfigureAwait(false);
                 identifiedTypes.UnionWith(requiredSuperTypeRecords.Select(record => record.Value));
 
                 var requiredMainTypeRecords = await cardAdapter.Types
                     .SelectAsync(async type => await mainTypeRecordLookup.TryGetValueAsync(type).ConfigureAwait(false))
-                    .Where(result => result.Success)
-                    .Select(result => result.Value)
+                    .WhereAsync(result => result.Success)
+                    .SelectAsync(result => result.Value)
                     .ToListAsync()
                     .ConfigureAwait(false);
                 identifiedTypes.UnionWith(requiredMainTypeRecords.Select(record => record.Value));
 
                 var requiredSubTypeRecords = await cardAdapter.Types
                     .SelectAsync(async type => await subTypeRecordLookup.TryGetValueAsync(type).ConfigureAwait(false))
-                    .Where(result => result.Success)
-                    .Select(result => result.Value)
+                    .WhereAsync(result => result.Success)
+                    .SelectAsync(result => result.Value)
                     .ToListAsync()
                     .ConfigureAwait(false);
                 identifiedTypes.UnionWith(requiredSubTypeRecords.Select(record => record.Value));
@@ -251,8 +273,8 @@ namespace MindSculptor.Tools.Applications.Harvester.Processing
 
                 var requiredManaSymbolRecords = await cardAdapter.CastingCost
                     .SelectAsync(async manaSymbol => await manaSymbolRecordLookup.TryGetValueAsync(manaSymbol.SymbolType).ConfigureAwait(false))
-                    .Where(result => result.Success)
-                    .Select(result => result.Value)
+                    .WhereAsync(result => result.Success)
+                    .SelectAsync(result => result.Value)
                     .ToListAsync()
                     .ConfigureAwait(false);
 
@@ -272,13 +294,14 @@ namespace MindSculptor.Tools.Applications.Harvester.Processing
                     foreach (var existingRecord in existingCastingCostRecords)
                         await existingRecord.DeleteRecordAsync()
                             .ConfigureAwait(false);
+                    var ordinal = 0;
                     foreach (var requiredCastingCost in cardAdapter.CastingCost)
                     {
                         var requiredManaSymbolRecord = requiredManaSymbolRecords
                             .Where(record => record.Code == requiredCastingCost.SymbolType)
                             .Single();
                         await dataContext.Cards.FaceHasCastingCost
-                            .NewRecordAsync(faceRecord, requiredManaSymbolRecord, requiredCastingCost.Ordinal, requiredCastingCost.Count)
+                            .NewRecordAsync(faceRecord, requiredManaSymbolRecord, ordinal, requiredCastingCost.Count)
                             .ConfigureAwait(false);
                     }
                 }
@@ -292,14 +315,26 @@ namespace MindSculptor.Tools.Applications.Harvester.Processing
                     .ConfigureAwait(false);
 
                 SetInclusionRecord setInclusionRecord;
-                var setInclusionResult = await dataContext.Cards.SetInclusions
+                var setInclusionResult = cardAdapter.HasCollectorsNumber ?
+                    
+                    await dataContext.Cards.SetInclusions
                     .QueryWhere(record => 
                         record.SetRecord == setRecord &&
                         record.BaseRecord == baseRecord &&
                         record.SubsetTypeRecord == subsetTypeRecord &&
                         record.CollectorsNumber == cardAdapter.CollectorsNumber)
                     .TryGetSingleAsync()
-                    .ConfigureAwait(false);
+                    .ConfigureAwait(false) :
+                    
+                    await dataContext.Cards.SetInclusions
+                        .QueryWhere(record =>
+                            record.SetRecord == setRecord &&
+                            record.BaseRecord == baseRecord &&
+                            record.SubsetTypeRecord == subsetTypeRecord &&
+                            record.LogicalOrdinal == logicalOrdinal)
+                        .TryGetSingleAsync()
+                        .ConfigureAwait(false);
+
                 if (setInclusionResult.Success)
                     setInclusionRecord = setInclusionResult.Value;
                 else
@@ -318,6 +353,18 @@ namespace MindSculptor.Tools.Applications.Harvester.Processing
                     .GetValueAsync("Regular")
                     .ConfigureAwait(false);
 
+                ArtistRecord artistRecord;
+                var artistResult = await dataContext.Cards.Artists
+                    .QueryWhere(record => record.Name == cardAdapter.Artist)
+                    .TryGetSingleAsync()
+                    .ConfigureAwait(false);
+                if (artistResult.Success)
+                    artistRecord = artistResult.Value;
+                else
+                    artistRecord = await dataContext.Cards.Artists
+                        .NewRecordAsync(cardAdapter.Artist)
+                        .ConfigureAwait(false);
+
                 BasePrintingRecord basePrintingRecord;
                 var basePrintingResult = await dataContext.Cards.BasePrintings
                     .QueryWhere(record => 
@@ -329,7 +376,7 @@ namespace MindSculptor.Tools.Applications.Harvester.Processing
                     basePrintingRecord = basePrintingResult.Value;
                 else
                     basePrintingRecord = await dataContext.Cards.BasePrintings
-                        .NewRecordAsync(setInclusionRecord, printingTypeRecord)
+                        .NewRecordAsync(setInclusionRecord, printingTypeRecord, artistRecord)
                         .ConfigureAwait(false);
 
                 FacePrintingRecord facePrintingRecord;

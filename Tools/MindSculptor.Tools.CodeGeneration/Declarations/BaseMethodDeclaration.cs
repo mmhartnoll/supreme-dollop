@@ -15,6 +15,9 @@ namespace MindSculptor.Tools.CodeGeneration.Declarations
         public void AddParameter(TypeDeclaration type, string name)
             => parameterDeclarations.Add(new ParameterDeclaration(type, name));
 
+        public void AddParameter(TypeDeclaration type, string name, ExpressionSyntax defaultValue)
+            => parameterDeclarations.Add(new ParameterDeclaration(type, name, defaultValue));
+
         protected override MemberDeclarationSyntax GetMemberDeclarationSyntax()
         {
             var parameterSyntaxes = parameterDeclarations

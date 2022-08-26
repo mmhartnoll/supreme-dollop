@@ -1,6 +1,7 @@
 ﻿using Fizzler.Systems.HtmlAgilityPack;
 using HtmlAgilityPack;
 using MindSculptor.Tools.Applications.Harvester.Extensions;
+using MindSculptor.Tools.Data;
 using MindSculptor.Tools.Extensions;
 using System;
 using System.Collections.Generic;
@@ -24,7 +25,7 @@ namespace MindSculptor.Tools.Applications.Harvester.Processing.Gatherer
         private readonly Lazy<FormattedInteger?> toughnessLoader;
         private readonly Lazy<FormattedInteger?> loyaltyLoader;
 
-        private readonly Lazy<short?> collectorsNumberLoader;
+        private readonly Lazy<int?> collectorsNumberLoader;
         private readonly Lazy<string> rarityLoader;
         private readonly Lazy<string?> flavorTextLoader;
         private readonly Lazy<string> artistLoader;
@@ -51,7 +52,7 @@ namespace MindSculptor.Tools.Applications.Harvester.Processing.Gatherer
         public FormattedInteger Toughness => toughnessLoader.Value ?? throw new InvalidOperationException($"'{nameof(Toughness)}' is not defined. Please check the value of '{nameof(HasPowerAndToughness)}' before accessing this property.");
         public FormattedInteger Loyalty => loyaltyLoader.Value ?? throw new InvalidOperationException($"'{nameof(Loyalty)}' is not defined. Please check the value of '{nameof(HasLoyalty)}' before accessing this property.");
 
-        public short CollectorsNumber => collectorsNumberLoader.Value ?? throw new InvalidOperationException($"'{nameof(CollectorsNumber)}' is not defined. Please check the value of '{nameof(HasCollectorsNumber)}' before accessing this property.");
+        public int CollectorsNumber => collectorsNumberLoader.Value ?? throw new InvalidOperationException($"'{nameof(CollectorsNumber)}' is not defined. Please check the value of '{nameof(HasCollectorsNumber)}' before accessing this property.");
         public string Rarity => rarityLoader.Value;
         public string FlavorText => flavorTextLoader.Value ?? throw new InvalidOperationException($"'{nameof(FlavorText)}' is not defined. Please check the value of '{nameof(HasFlavorText)}' before accessing this property.");
         public string Artist => artistLoader.Value;
@@ -74,13 +75,13 @@ namespace MindSculptor.Tools.Applications.Harvester.Processing.Gatherer
             toughnessLoader = new Lazy<FormattedInteger?>(LoadToughness);
             loyaltyLoader = new Lazy<FormattedInteger?>(LoadLoyalty);
 
-            collectorsNumberLoader = new Lazy<short?>(LoadCollectorsNumber);
+            collectorsNumberLoader = new Lazy<int?>(LoadCollectorsNumber);
             rarityLoader = new Lazy<string>(LoadRarity);
             flavorTextLoader = new Lazy<string?>(LoadFlavorText);
             artistLoader = new Lazy<string>(LoadArtist);
         }
 
-        internal static async Task<VerifiedResult<GathererCardAdapter>> LoadAsync(string name, int multiverseId)
+        internal static async Task<GathererCardAdapter> LoadAsync(string name, int multiverseId)
         {
             var htmlNode = await LoadHtmlNodeAsync(multiverseId)
                 .ConfigureAwait(false);
@@ -91,8 +92,8 @@ namespace MindSculptor.Tools.Applications.Harvester.Processing.Gatherer
                 .InnerHtml?
                 .RemoveLineBreaks();
             if (verificationName != null && verificationName == name)
-                return VerifiedResult<GathererCardAdapter>.Successful(adapter);
-            return VerifiedResult<GathererCardAdapter>.Successful(GathererMultiFaceCardAdapter.Load(htmlNode, name, multiverseId));
+                return adapter;
+            return GathererMultiFaceCardAdapter.Load(htmlNode, name, multiverseId);
         }
 
         protected static async Task<HtmlNode> LoadHtmlNodeAsync(int multiverseId)
@@ -113,12 +114,11 @@ namespace MindSculptor.Tools.Applications.Harvester.Processing.Gatherer
             var symbolGroups = rawValue
                 .Split(new[] { '{', '}' }, StringSplitOptions.RemoveEmptyEntries)
                 .GroupBy(symbol => symbol);
-            var ordinal = 1;
             foreach (var symbolGroup in symbolGroups)
                 if (int.TryParse(symbolGroup.Key, out var numericKey))
-                    yield return ManaCost.Create("1", numericKey, ordinal++);
+                    yield return new ManaCost("1", numericKey);
                 else
-                    yield return ManaCost.Create(symbolGroup.Key, symbolGroup.Count(), ordinal++);
+                    yield return new ManaCost(symbolGroup.Key, symbolGroup.Count());
         }
 
         private IEnumerable<string> LoadTypes()
@@ -203,7 +203,7 @@ namespace MindSculptor.Tools.Applications.Harvester.Processing.Gatherer
             return FormattedInteger.CreateFormatted(baseLoyalty, loyaltyFormat);
         }
 
-        private short? LoadCollectorsNumber()
+        private int? LoadCollectorsNumber()
         {
             var rawValue = HtmlNode.QuerySelector($"{SelectorPrefix}_numberRow .value")?
                 .InnerHtml;
@@ -217,7 +217,8 @@ namespace MindSculptor.Tools.Applications.Harvester.Processing.Gatherer
         private string LoadRarity()
             => HtmlNode.QuerySelector($"{SelectorPrefix}_rarityRow .value span")
                 .InnerHtml
-                .RemoveLineBreaks();
+                .RemoveLineBreaks()
+                .Replace("Bonus", "Special");
 
         private string? LoadFlavorText()
         {

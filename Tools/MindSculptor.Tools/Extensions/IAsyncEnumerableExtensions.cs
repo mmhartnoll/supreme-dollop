@@ -13,48 +13,46 @@ namespace MindSculptor.Tools.Extensions
             return false;
         }
 
-
-
         public async static IAsyncEnumerable<T> EnumerateAsync<T>(this IAsyncEnumerable<T> source)
         {
             await foreach (var item in source.ConfigureAwait(false))
                 yield return item;
         }
 
-        public async static IAsyncEnumerable<T> Where<T>(this IAsyncEnumerable<T> source, Func<T, bool> predicate)
+        public async static IAsyncEnumerable<T> WhereAsync<T>(this IAsyncEnumerable<T> source, Func<T, bool> predicate)
         {
             await foreach (var item in source.ConfigureAwait(false))
                 if (predicate(item))
                     yield return item;
         }
 
-        public async static IAsyncEnumerable<T> Where<T>(this IAsyncEnumerable<T> source, Func<T, Task<bool>> predicate)
+        public async static IAsyncEnumerable<T> WhereAsync<T>(this IAsyncEnumerable<T> source, Func<T, Task<bool>> predicate)
         {
             await foreach (var item in source.ConfigureAwait(false))
                 if (await predicate(item).ConfigureAwait(false))
                     yield return item;
         }
 
-        public async static IAsyncEnumerable<T> Where<T>(this IAsyncEnumerable<T> source, Func<T, ValueTask<bool>> predicate)
+        public async static IAsyncEnumerable<T> WhereAsync<T>(this IAsyncEnumerable<T> source, Func<T, ValueTask<bool>> predicate)
         {
             await foreach (var item in source.ConfigureAwait(false))
                 if (await predicate(item).ConfigureAwait(false))
                     yield return item;
         }
 
-        public async static IAsyncEnumerable<TOut> Select<TIn, TOut>(this IAsyncEnumerable<TIn> source, Func<TIn, TOut> selector)
+        public async static IAsyncEnumerable<TOut> SelectAsync<TIn, TOut>(this IAsyncEnumerable<TIn> source, Func<TIn, TOut> selector)
         {
             await foreach (var item in source.ConfigureAwait(false))
                 yield return selector(item);
         }
 
-        public async static IAsyncEnumerable<TOut> Select<TIn, TOut>(this IAsyncEnumerable<TIn> source, Func<TIn, Task<TOut>> selector)
+        public async static IAsyncEnumerable<TOut> SelectAsync<TIn, TOut>(this IAsyncEnumerable<TIn> source, Func<TIn, Task<TOut>> selector)
         {
             await foreach (var item in source.ConfigureAwait(false))
                 yield return await selector(item).ConfigureAwait(false);
         }
 
-        public async static IAsyncEnumerable<TOut> Select<TIn, TOut>(this IAsyncEnumerable<TIn> source, Func<TIn, ValueTask<TOut>> selector)
+        public async static IAsyncEnumerable<TOut> SelectAsync<TIn, TOut>(this IAsyncEnumerable<TIn> source, Func<TIn, ValueTask<TOut>> selector)
         {
             await foreach (var item in source.ConfigureAwait(false))
                 yield return await selector(item).ConfigureAwait(false);
@@ -106,6 +104,19 @@ namespace MindSculptor.Tools.Extensions
             await foreach (var item in source.ConfigureAwait(false))
                 list.Add(item);
             return list;
+        }
+
+        public async static Task<Dictionary<TKey, T>> ToDictionaryAsync<TKey, T>(this IAsyncEnumerable<T> source, Func<T, TKey> keySelector)
+                where TKey : notnull
+            => await source.ToDictionaryAsync(keySelector, value => value).ConfigureAwait(false);
+
+        public async static Task<Dictionary<TKey, TValue>> ToDictionaryAsync<T, TKey, TValue>(this IAsyncEnumerable<T> source, Func<T, TKey> keySelector, Func<T, TValue> valueSelector)
+            where TKey : notnull
+        {
+            var dictionary = new Dictionary<TKey, TValue>();
+            await foreach (var item in source.ConfigureAwait(false))
+                dictionary.Add(keySelector(item), valueSelector(item));
+            return dictionary;
         }
     }
 }

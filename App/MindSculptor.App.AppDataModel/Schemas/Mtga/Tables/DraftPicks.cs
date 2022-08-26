@@ -16,15 +16,9 @@ namespace MindSculptor.App.AppDataModel.Schemas.Mtga.Tables
             IsReadOnly = true
         };
 
-        public static readonly IdField DraftEventEntryId = new IdField.Definition
+        public static readonly IdField EventEntryId = new IdField.Definition
         {
-            MappedField = DraftEventEntries.Id,
-            IsReadOnly = true
-        };
-
-        public static readonly IdField DigitalCardId = new IdField.Definition
-        {
-            MappedField = Cards.Id,
+            MappedField = EventEntries.Id,
             IsReadOnly = true
         };
 
@@ -38,18 +32,11 @@ namespace MindSculptor.App.AppDataModel.Schemas.Mtga.Tables
         public static readonly IntegerField PickNumber = new IntegerField.Definition
         {
             MinimumValue = 1,
-            MaximumValue = 14,
+            MaximumValue = 15,
             IsReadOnly = true
         };
 
-        public static readonly IntegerField Ordinal = new IntegerField.Definition
-        {
-            MinimumValue = 0,
-            MaximumValue = 13,
-            IsReadOnly = true
-        };
-
-        public static readonly BooleanField IsPick = new BooleanField.Definition
+        public static readonly BooleanField IsFifthCopy = new BooleanField.Definition
         {
             IsReadOnly = true
         };
@@ -61,19 +48,13 @@ namespace MindSculptor.App.AppDataModel.Schemas.Mtga.Tables
 
         public static UniqueKey UQ = new UniqueKey.Definition
         {
-            Fields = FieldReference.List(DraftEventEntryId, PackNumber, PickNumber, Ordinal)
+            Fields = FieldReference.List(EventEntryId, PackNumber, PickNumber)
         };
 
-        public static ForeignKey FK1 = new ForeignKey.Definition
+        public static ForeignKey FK = new ForeignKey.Definition
         {
-            Fields = DraftEventEntryId,
-            ReferencedKey = DraftEventEntries.PK
-        };
-
-        public static ForeignKey FK2 = new ForeignKey.Definition
-        {
-            Fields = DigitalCardId,
-            ReferencedKey = Cards.PK
+            Fields = EventEntryId,
+            ReferencedKey = EventEntries.PK
         };
     }
 }

@@ -1,6 +1,6 @@
 ﻿using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using MindSculptor.DataAccess.DataContext.Query.Expressions.Logical;
+using MindSculptor.DataAccess.Context.Query.Expressions.Logical;
 using MindSculptor.DataAccess.Modelled.Records.Fields;
 using MindSculptor.DataAccess.Modelled.Records.Keys;
 using MindSculptor.Tools.Applications.DataContextGenerator.Extensions;

@@ -12,7 +12,7 @@ namespace MindSculptor.App.AppDataModel.Schemas.Mtga.Tables
 
         public static IdField SetId = new IdField.Definition
         {
-            MappedField = Schemas.Cards.Tables.Sets.Id,
+            MappedField = Cards.Tables.Sets.Id,
             IsReadOnly = true
         };
 
@@ -36,7 +36,7 @@ namespace MindSculptor.App.AppDataModel.Schemas.Mtga.Tables
         public static ForeignKey FK = new ForeignKey.Definition
         {
             Fields = SetId,
-            ReferencedKey = Schemas.Cards.Tables.Sets.PK
+            ReferencedKey = Cards.Tables.Sets.PK
         };
     }
 }

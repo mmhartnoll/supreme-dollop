@@ -10,4 +10,8 @@
     <ProjectReference Include="..\..\DataAccess\MindSculptor.DataAccess\MindSculptor.DataAccess.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Schemas\Accounts\Tables\" />
+  </ItemGroup>
+
 </Project>

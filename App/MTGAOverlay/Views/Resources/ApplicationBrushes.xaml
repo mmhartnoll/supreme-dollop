@@ -1,0 +1,14 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Color x:Key="ApplicationBrushes.BaseColor">#212121</Color>
+    <Color x:Key="ApplicationBrushes.AlternatingColor">#424242</Color>
+
+    <Color x:Key="ApplicationBrushes.LogMessageColor">#1E73BE</Color>
+    <Color x:Key="ApplicationBrushes.LogErrorMessageColor">#E80000</Color>
+
+    <Color x:Key="ApplicationBrushes.BaseBorderColor">AntiqueWhite</Color>
+
+    <Color x:Key="ApplicationBrushes.BaseFontColor">AntiqueWhite</Color>
+
+</ResourceDictionary>

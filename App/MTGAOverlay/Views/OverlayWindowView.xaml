@@ -1,0 +1,46 @@
+﻿<Window x:Class="MindSculptor.App.MtgaOverlay.Views.OverlayWindowView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:MindSculptor.App.MtgaOverlay.ViewModels"
+        xmlns:vw="clr-namespace:MindSculptor.App.MtgaOverlay.Views"
+        Title="MTGA Overlay"
+        AllowsTransparency="True"
+        WindowStyle="None"
+        Focusable="False"
+        ResizeMode="CanMinimize"
+        WindowStartupLocation="CenterScreen"
+        WindowState="Maximized"
+        Topmost="True"
+        DataContext="{StaticResource OverlayWindowViewModel}">
+    <Window.Background>
+        <SolidColorBrush Opacity="0"/>
+    </Window.Background>
+    <Window.Resources>
+
+        <DataTemplate DataType="{x:Type vm:BoosterInventoryViewModel}">
+            <vw:BoosterInventoryView/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type vm:DraftOverlayViewModel}">
+            <vw:DraftOverlayView/>
+        </DataTemplate>
+        
+        <DataTemplate DataType="{x:Type vm:LogReportingViewModel}">
+            <vw:LogReportingView/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type vm:MatchOverlayViewModel}">
+            <vw:MatchOverlayView/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type vm:MenuFrameViewModel}">
+            <vw:MenuFrameView/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type vm:OverlayContentViewModel}">
+            <vw:OverlayContentView/>
+        </DataTemplate>
+
+    </Window.Resources>
+    <ContentPresenter Content="{Binding Content}"/>
+</Window>

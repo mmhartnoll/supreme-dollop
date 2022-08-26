@@ -1,6 +1,6 @@
 ﻿using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using MindSculptor.DataAccess.DataContext;
+using MindSculptor.DataAccess.Context;
 using MindSculptor.DataAccess.Modelled.Records.Fields;
 using MindSculptor.Tools.Applications.DataContextGenerator.Extensions;
 using MindSculptor.Tools.CodeGeneration.Declarations;
@@ -36,7 +36,7 @@ namespace MindSculptor.Tools.Applications.DataContextGenerator.FileGenerators.Re
 
             StatementSyntax GetIsModifiedPropertyAssignment()
             {
-                var left = SyntaxFactory.IdentifierName(nameof(DataContextRecord.IsModified));
+                var left = SyntaxFactory.IdentifierName(nameof(DatabaseRecord.IsModified));
                 var right = SyntaxFactory.BinaryExpression(
                     SyntaxKind.NotEqualsExpression,
                     SyntaxFactory.IdentifierName(fieldDefinition.Name.FormatAsVariableName("_")),

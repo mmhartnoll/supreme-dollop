@@ -1,6 +1,6 @@
 ﻿using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using MindSculptor.DataAccess.DataContext;
+using MindSculptor.DataAccess.Context;
 using MindSculptor.DataAccess.Modelled.Records;
 using MindSculptor.DataAccess.Modelled.Records.Fields;
 using MindSculptor.Tools.Applications.DataContextGenerator.Extensions;
@@ -28,7 +28,8 @@ namespace MindSculptor.Tools.Applications.DataContextGenerator.FileGenerators.Ta
         protected override IEnumerable<StatementSyntax> GetMethodStatementSyntaxes()
         {
             var argumentList = new List<ArgumentSyntax>();
-            argumentList.Add(SyntaxFactory.Argument(SyntaxFactory.IdentifierName(nameof(DataContext))));
+            argumentList.Add(SyntaxFactory.Argument(SyntaxFactory.IdentifierName(nameof(DatabaseContext))));
+            argumentList.Add(SyntaxFactory.Argument(SyntaxFactory.ParseExpression("this")));
 
             foreach (var fieldDefinition in recordDefinition.Fields)
             {

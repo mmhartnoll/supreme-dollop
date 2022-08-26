@@ -1,7 +1,9 @@
 ﻿using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using MindSculptor.DataAccess.Modelled.Records;
+using MindSculptor.Tools.Applications.DataContextGenerator.Extensions;
 using MindSculptor.Tools.CodeGeneration.Declarations;
+using System.Threading;
 
 namespace MindSculptor.Tools.Applications.DataContextGenerator.FileGenerators.RecordFiles.Methods
 {
@@ -9,7 +11,9 @@ namespace MindSculptor.Tools.Applications.DataContextGenerator.FileGenerators.Re
     {
         private UpdateRecordAsyncMethodDeclaration(RecordDefinition recordDefinition)
             : base("Task", "UpdateRecordAsync", MemberModifiers.Async | MemberModifiers.Override, recordDefinition)
-        { }
+        {
+            AddParameter(typeof(CancellationToken), nameof(CancellationToken).FormatAsVariableName());
+        }
 
         public static UpdateRecordAsyncMethodDeclaration Create(RecordDefinition recordDefinition)
             => new UpdateRecordAsyncMethodDeclaration(recordDefinition);
@@ -21,7 +25,8 @@ namespace MindSculptor.Tools.Applications.DataContextGenerator.FileGenerators.Re
                             SyntaxFactory.MemberAccessExpression(
                                 SyntaxKind.SimpleMemberAccessExpression,
                                 SyntaxFactory.InvocationExpression(
-                                    SyntaxFactory.IdentifierName("command.ExecuteNonQueryAsync")),
+                                        SyntaxFactory.IdentifierName("command.ExecuteNonQueryAsync"))
+                                    .AddArgumentListArguments(SyntaxFactory.Argument(SyntaxFactory.IdentifierName(nameof(CancellationToken).FormatAsVariableName()))),
                                 SyntaxFactory.IdentifierName("ConfigureAwait")))
                         .AddArgumentListArguments(SyntaxFactory.Argument(SyntaxFactory.ParseExpression("false")))));
     }

@@ -4,7 +4,6 @@ using MindSculptor.DataAccess.Modelled;
 using MindSculptor.Tools.Applications.DataContextGenerator.Extensions;
 using MindSculptor.Tools.CodeGeneration.Declarations;
 using System.Collections.Generic;
-using System.Data.Common;
 
 namespace MindSculptor.Tools.Applications.DataContextGenerator.FileGenerators.DataContextFiles.Constructors
 {
@@ -17,10 +16,9 @@ namespace MindSculptor.Tools.Applications.DataContextGenerator.FileGenerators.Da
         {
             this.dataModel = dataModel;
 
-            AddParameter(typeof(DbConnection), nameof(DbConnection).FormatAsVariableName());
-            AddParameter(TypeDeclaration.Create(typeof(DbTransaction), true), nameof(DbTransaction).FormatAsVariableName());
+            AddParameter(typeof(string), "connectionString");
 
-            AddBaseConstructorArguments(nameof(DbConnection).FormatAsVariableName(), nameof(DbTransaction).FormatAsVariableName());
+            AddBaseConstructorArguments("connectionString");
         }
 
         public static DataContextConstructorDeclaration Create(DataModel dataModel)

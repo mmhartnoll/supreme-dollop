@@ -28,6 +28,12 @@ namespace MindSculptor.App.AppDataModel.Schemas.Cards.Tables
             IsReadOnly = true
         };
 
+        public static IdField ArtistId = new IdField.Definition
+        {
+            MappedField = Artists.Id,
+            IsReadOnly = false
+        };
+
         public static PrimaryKey PK = new PrimaryKey.Definition
         {
             Fields = Id
@@ -48,6 +54,12 @@ namespace MindSculptor.App.AppDataModel.Schemas.Cards.Tables
         {
             Fields = PrintingTypeId,
             ReferencedKey = PrintingTypes.PK
+        };
+
+        public static ForeignKey FK3 = new ForeignKey.Definition
+        {
+            Fields = ArtistId,
+            ReferencedKey = Artists.PK
         };
     }
 }

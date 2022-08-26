@@ -1,6 +1,6 @@
 ﻿using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using MindSculptor.DataAccess.DataContext;
+using MindSculptor.DataAccess.Context;
 using MindSculptor.DataAccess.Modelled.Records;
 using MindSculptor.Tools.Applications.DataContextGenerator.Extensions;
 using MindSculptor.Tools.CodeGeneration.Declarations;
@@ -17,12 +17,14 @@ namespace MindSculptor.Tools.Applications.DataContextGenerator.FileGenerators.Re
         {
             this.recordDefinition = recordDefinition;
 
-            AddParameter(typeof(DataContext), nameof(DataContext).FormatAsVariableName());
+            AddParameter(typeof(DatabaseContext), nameof(DatabaseContext).FormatAsVariableName());
+            AddParameter($"{recordDefinition.TableName}Table", $"{recordDefinition.TableName}Table".FormatAsVariableName());
 
             foreach (var fieldDefinition in recordDefinition.Fields)
                 AddParameter(TypeDeclaration.Create(fieldDefinition.MappedDalType, fieldDefinition.IsNullable), fieldDefinition.Name.FormatAsVariableName());
 
-            AddBaseConstructorArguments(nameof(DataContext).FormatAsVariableName());
+            AddBaseConstructorArguments(nameof(DatabaseContext).FormatAsVariableName());
+            AddBaseConstructorArguments($"{recordDefinition.TableName}Table".FormatAsVariableName());
         }
 
         public static RecordConstructorDeclaration Create(RecordDefinition recordDefinition)

@@ -1,9 +1,11 @@
 ﻿<Application x:Class="MindSculptor.App.MtgaOverlay.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:MindSculptor.App.MtgaOverlay"
-             StartupUri="GUI\MainWindow.xaml">
+             xmlns:vm="clr-namespace:MindSculptor.App.MtgaOverlay.ViewModels"
+             StartupUri="Views\OverlayWindowView.xaml">
     <Application.Resources>
-         
+
+        <vm:OverlayWindowViewModel x:Key="OverlayWindowViewModel"/>
+
     </Application.Resources>
 </Application>

@@ -110,6 +110,9 @@ namespace MindSculptor.Tools.Applications.SchemaTool
                     case IntegerField intField:
                         TypeSection = "INT";
                         break;
+                    case DecimalField decimalField:
+                        TypeSection = $"DECIMAL({decimalField.Precision}, {decimalField.Scale})";
+                        break;
                     case BooleanField booleanField:
                         TypeSection = "BIT";
                         break;

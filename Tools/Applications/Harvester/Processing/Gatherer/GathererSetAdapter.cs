@@ -22,8 +22,8 @@ namespace MindSculptor.Tools.Applications.Harvester.Processing.Gatherer
         {
             SetName = setName;
 
-            nameIdPairsLoader = AsyncLazy<IEnumerable<(string, int)>>.Create(LoadNameIdPairsAsync);
-            cardAdapterLookup = AsyncCachedLookup<(string, int), GathererCardAdapter>.Create(LoadCardAdapterAsync);
+            nameIdPairsLoader = new AsyncLazy<IEnumerable<(string, int)>>(LoadNameIdPairsAsync);
+            cardAdapterLookup = new AsyncCachedLookup<(string, int), GathererCardAdapter>(LoadCardAdapterAsync);
         }
 
         public static GathererSetAdapter Create(string setName)
@@ -94,7 +94,7 @@ namespace MindSculptor.Tools.Applications.Harvester.Processing.Gatherer
             }
         }
 
-        private static async Task<VerifiedResult<GathererCardAdapter>> LoadCardAdapterAsync((string Name, int MultiverseId) key)
+        private static async Task<GathererCardAdapter> LoadCardAdapterAsync((string Name, int MultiverseId) key)
             => await GathererCardAdapter.LoadAsync(key.Name, key.MultiverseId).ConfigureAwait(false);
 
         private static IEnumerable<(string, int)> GetNameIdPairs(HtmlNode htmlNode)

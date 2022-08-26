@@ -13,22 +13,25 @@ namespace MindSculptor.Tools
 
         private readonly SemaphoreSlim semaphore = new SemaphoreSlim(1);
 
-        private AsyncCachedLookup(Func<TKey, Task<VerifiedResult<TValue>>> lookupFunction)
+        public AsyncCachedLookup(Func<TKey, Task<VerifiedResult<TValue>>> lookupFunction)
             => this.lookupFunction = lookupFunction;
 
-        public static AsyncCachedLookup<TKey, TValue> Create(Func<TKey, Task<TValue>> lookupFunction)
-            => new AsyncCachedLookup<TKey, TValue>(
-                async key => 
-                {
-                    var value = await lookupFunction.Invoke(key)
-                        .ConfigureAwait(false);
-                    return value == null ? 
-                        VerifiedResult<TValue>.Failure : 
-                        VerifiedResult<TValue>.Successful(value);
-                });
+        public AsyncCachedLookup(Func<TKey, Task<TValue>> lookupFunction)
+            : this(async key =>
+            {
+                var value = await lookupFunction.Invoke(key)
+                    .ConfigureAwait(false);
+                return value == null ?
+                    VerifiedResult<TValue>.Failure :
+                    VerifiedResult<TValue>.Successful(value);
+            }) { }
 
-        public static AsyncCachedLookup<TKey, TValue> Create(Func<TKey, Task<VerifiedResult<TValue>>> lookupFunction)
-            => new AsyncCachedLookup<TKey, TValue>(lookupFunction);
+        public async Task AddValueAsync(TKey key, TValue value)
+        {
+            await semaphore.WaitAsync().ConfigureAwait(false);
+            lookupCache.Add(key, value);
+            semaphore.Release();
+        }
 
         public async Task<TValue> GetValueAsync(TKey key)
         {

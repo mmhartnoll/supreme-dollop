@@ -1,0 +1,44 @@
+﻿<UserControl x:Class="MindSculptor.App.MtgaOverlay.Views.OverlayContentView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:c="clr-namespace:MindSculptor.App.MtgaOverlay.Views.Controls">
+    <UserControl.Resources>
+
+        <DataTemplate x:Key="LoadedTemplate">
+            <ContentPresenter Content="{Binding Model.SubContent}"/>
+        </DataTemplate>
+
+        <DataTemplate x:Key="LoadingTemplate">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="35*"/>
+                    <RowDefinition Height="75*"/>
+                    <RowDefinition Height="2050*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3730*"/>
+                    <ColumnDefinition Width="75*"/>
+                    <ColumnDefinition Width="35*"/>
+                </Grid.ColumnDefinitions>
+                <c:LoadingSpinner Grid.Row="1" Grid.Column="1"/>
+            </Grid>
+        </DataTemplate>
+
+    </UserControl.Resources>
+
+    <ContentPresenter Content="{Binding}">
+        <ContentPresenter.Style>
+            <Style TargetType="ContentPresenter">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding IsModelLoaded}" Value="True">
+                        <Setter Property="ContentTemplate" Value="{StaticResource LoadedTemplate}"/>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding IsModelLoaded}" Value="False">
+                        <Setter Property="ContentTemplate" Value="{StaticResource LoadingTemplate}"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </ContentPresenter.Style>
+    </ContentPresenter>
+
+</UserControl>

@@ -1,6 +1,6 @@
 ﻿using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using MindSculptor.DataAccess.DataContext;
+using MindSculptor.DataAccess.Context;
 using MindSculptor.DataAccess.Modelled.Records;
 using MindSculptor.Tools.Applications.DataContextGenerator.Extensions;
 using MindSculptor.Tools.CodeGeneration.Declarations;
@@ -18,7 +18,8 @@ namespace MindSculptor.Tools.Applications.DataContextGenerator.FileGenerators.Re
         {
             this.recordDefinition = recordDefinition;
 
-            AddParameter(typeof(DataContext), nameof(DataContext).FormatAsVariableName());
+            AddParameter(typeof(DatabaseContext), nameof(DatabaseContext).FormatAsVariableName());
+            AddParameter($"{recordDefinition.TableName}Table", $"{recordDefinition.TableName}Table".FormatAsVariableName());
 
             foreach (var fieldDefinition in recordDefinition.Fields)
                 AddParameter(TypeDeclaration.Create(fieldDefinition.MappedDalType, fieldDefinition.IsNullable), fieldDefinition.Name.FormatAsVariableName());
@@ -32,7 +33,9 @@ namespace MindSculptor.Tools.Applications.DataContextGenerator.FileGenerators.Re
             var argumentSyntaxes = recordDefinition.Fields
                 .Select(fieldDefinition => SyntaxFactory.Argument(SyntaxFactory.IdentifierName(fieldDefinition.Name.FormatAsVariableName())));
             var objectCreationExpression = SyntaxFactory.ObjectCreationExpression(SyntaxFactory.ParseTypeName(recordDefinition.RecordName))
-                .AddArgumentListArguments(SyntaxFactory.Argument(SyntaxFactory.IdentifierName(nameof(DataContext).FormatAsVariableName())))
+                .AddArgumentListArguments(
+                    SyntaxFactory.Argument(SyntaxFactory.IdentifierName(nameof(DatabaseContext).FormatAsVariableName())),
+                    SyntaxFactory.Argument(SyntaxFactory.IdentifierName($"{recordDefinition.TableName}Table".FormatAsVariableName())))
                 .AddArgumentListArguments(argumentSyntaxes.ToArray());
             yield return SyntaxFactory.ReturnStatement(objectCreationExpression);
         }

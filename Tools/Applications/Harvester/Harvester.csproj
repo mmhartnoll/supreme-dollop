@@ -16,6 +16,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\App\MindSculptor.App.AppDataContext\MindSculptor.App.AppDataContext.csproj" />
     <ProjectReference Include="..\..\..\DataAccess\MindSculptor.DataAccess\MindSculptor.DataAccess.csproj" />
+    <ProjectReference Include="..\..\MindSculptor.Tools.Data\MindSculptor.Tools.Data.csproj" />
   </ItemGroup>
 
 </Project>

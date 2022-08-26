@@ -1,6 +1,6 @@
 ﻿using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using MindSculptor.DataAccess.DataContext;
+using MindSculptor.DataAccess.Context;
 using MindSculptor.DataAccess.Modelled.Records;
 using MindSculptor.Tools.Applications.DataContextGenerator.Extensions;
 using MindSculptor.Tools.CodeGeneration.Declarations;
@@ -17,7 +17,7 @@ namespace MindSculptor.Tools.Applications.DataContextGenerator.FileGenerators.Ta
         {
             this.recordDefinition = recordDefinition;
 
-            AddParameter(typeof(DataContext), nameof(DataContext).FormatAsVariableName());
+            AddParameter(typeof(DatabaseContext), nameof(DatabaseContext).FormatAsVariableName());
         }
 
         public static CreateTableClassMethodDeclaration Create(RecordDefinition recordDefinition)
@@ -26,7 +26,7 @@ namespace MindSculptor.Tools.Applications.DataContextGenerator.FileGenerators.Ta
         protected override IEnumerable<StatementSyntax> GetMethodStatementSyntaxes()
         {
             var objectCreationExpression = SyntaxFactory.ObjectCreationExpression(SyntaxFactory.ParseTypeName($"{recordDefinition.TableName}Table"))
-                .AddArgumentListArguments(SyntaxFactory.Argument(SyntaxFactory.IdentifierName(nameof(DataContext).FormatAsVariableName())));
+                .AddArgumentListArguments(SyntaxFactory.Argument(SyntaxFactory.IdentifierName(nameof(DatabaseContext).FormatAsVariableName())));
             yield return SyntaxFactory.ReturnStatement(objectCreationExpression);
         }
     }

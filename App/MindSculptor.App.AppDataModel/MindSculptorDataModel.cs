@@ -6,7 +6,7 @@ namespace MindSculptor.App.AppDataModel
 {
     public class MindSculptorDataModel : DataModel
     {
-        public static Schema Accounts = new Schema.Definition { };
+        //public static Schema Accounts = new Schema.Definition { };
 
         public static Schema Cards = new Schema.Definition { };
 
