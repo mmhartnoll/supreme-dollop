@@ -12,28 +12,28 @@ namespace MindSculptor.App.AppDataContext.Schemas.Cards.Tables
 {
     public class SubTypesTable : DatabaseTable<SubTypeRecord, SubTypeRecordExpression>
     {
-        private SubTypesTable(DatabaseContext dataContext) : base(dataContext, "Cards", "SubTypes")
+        private SubTypesTable(DatabaseContext databaseContext) : base(databaseContext, "Cards", "SubTypes")
         {
         }
 
-        internal static SubTypesTable Create(DatabaseContext dataContext)
+        internal static SubTypesTable Create(DatabaseContext databaseContext)
         {
-            return new SubTypesTable(dataContext);
+            return new SubTypesTable(databaseContext);
         }
 
         public SubTypeRecord NewRecord(string value)
         {
-            return Context.Execute(command => NewRecord(command, Guid.NewGuid(), value));
+            return DatabaseContext.Execute(command => NewRecord(command, Guid.NewGuid(), value));
         }
 
         public async Task<SubTypeRecord> NewRecordAsync(string value, CancellationToken cancellationToken = default)
         {
-            return await Context.ExecuteAsync((command, cancellationToken) => NewRecordAsync(command, Guid.NewGuid(), value, cancellationToken), cancellationToken).ConfigureAwait(false);
+            return await DatabaseContext.ExecuteAsync((command, cancellationToken) => NewRecordAsync(command, Guid.NewGuid(), value, cancellationToken), cancellationToken).ConfigureAwait(false);
         }
 
         private SubTypeRecord NewRecord(DbCommand command, Guid id, string value)
         {
-            var newRecord = SubTypeRecord.Create(Context, this, id, value);
+            var newRecord = SubTypeRecord.Create(DatabaseContext, this, id, value);
             command.CommandText = "INSERT INTO [Cards].[SubTypes] ( Id, Value ) VALUES ( @Id, @Value );";
             command.AddParameter("Id", newRecord.Id);
             command.AddParameter("Value", newRecord.Value);
@@ -44,7 +44,7 @@ namespace MindSculptor.App.AppDataContext.Schemas.Cards.Tables
 
         private async Task<SubTypeRecord> NewRecordAsync(DbCommand command, Guid id, string value, CancellationToken cancellationToken)
         {
-            var newRecord = SubTypeRecord.Create(Context, this, id, value);
+            var newRecord = SubTypeRecord.Create(DatabaseContext, this, id, value);
             command.CommandText = "INSERT INTO [Cards].[SubTypes] ( Id, Value ) VALUES ( @Id, @Value );";
             command.AddParameter("Id", newRecord.Id);
             command.AddParameter("Value", newRecord.Value);
@@ -57,7 +57,7 @@ namespace MindSculptor.App.AppDataContext.Schemas.Cards.Tables
         {
             var id = (Guid)dbDataReader["Id"];
             var value = (string)dbDataReader["Value"];
-            return SubTypeRecord.Create(Context, this, id, value);
+            return SubTypeRecord.Create(DatabaseContext, this, id, value);
         }
     }
 }

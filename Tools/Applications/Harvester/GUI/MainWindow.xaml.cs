@@ -38,7 +38,7 @@ namespace MindSculptor.Tools.Applications.Harvester.GUI
                     await using var transaction = await dataContext.BeginTransactionAsync();
                     try
                     {
-                        await transaction.ExecuteAsync(TransactionScope).ConfigureAwait(false);
+                        await transaction.ExecuteAsync(TransactionScope);
                         await transaction.CommitAsync();
                     }
                     catch (Exception ex)
@@ -109,6 +109,6 @@ namespace MindSculptor.Tools.Applications.Harvester.GUI
             BtnProcessSet.IsEnabled = enable;
         }
 
-        private const string DBConnectionString = @"Server=localhost\SQLEXPRESS;Database=MindSculptorApp;Trusted_Connection=True;";
+        private const string DBConnectionString = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=MindSculptorApp;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False;";
     }
 }

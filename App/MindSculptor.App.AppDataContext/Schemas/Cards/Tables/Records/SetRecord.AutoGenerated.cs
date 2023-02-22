@@ -18,7 +18,7 @@ namespace MindSculptor.App.AppDataContext.Schemas.Cards.Tables.Records
         public int ReleaseMonth { get; }
         public int? ReleaseDay { get; }
 
-        private SetRecord(DatabaseContext dataContext, SetsTable setsTable, Guid id, string name, string code, string? codeExtension, int releaseYear, int releaseMonth, int? releaseDay) : base(dataContext, setsTable)
+        private SetRecord(DatabaseContext databaseContext, SetsTable setsTable, Guid id, string name, string code, string? codeExtension, int releaseYear, int releaseMonth, int? releaseDay) : base(databaseContext, setsTable)
         {
             Id = id;
             Name = name;
@@ -29,9 +29,9 @@ namespace MindSculptor.App.AppDataContext.Schemas.Cards.Tables.Records
             ReleaseDay = releaseDay;
         }
 
-        internal static SetRecord Create(DatabaseContext dataContext, SetsTable setsTable, Guid id, string name, string code, string? codeExtension, int releaseYear, int releaseMonth, int? releaseDay)
+        internal static SetRecord Create(DatabaseContext databaseContext, SetsTable setsTable, Guid id, string name, string code, string? codeExtension, int releaseYear, int releaseMonth, int? releaseDay)
         {
-            return new SetRecord(dataContext, setsTable, id, name, code, codeExtension, releaseYear, releaseMonth, releaseDay);
+            return new SetRecord(databaseContext, setsTable, id, name, code, codeExtension, releaseYear, releaseMonth, releaseDay);
         }
 
         protected override void UpdateRecord(DbCommand command)

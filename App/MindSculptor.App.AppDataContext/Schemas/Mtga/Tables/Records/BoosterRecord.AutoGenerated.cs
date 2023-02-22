@@ -13,15 +13,15 @@ namespace MindSculptor.App.AppDataContext.Schemas.Mtga.Tables.Records
         public Guid SetId { get; }
         public int MtgaBoosterId { get; }
 
-        private BoosterRecord(DatabaseContext dataContext, BoostersTable boostersTable, Guid setId, int mtgaBoosterId) : base(dataContext, boostersTable)
+        private BoosterRecord(DatabaseContext databaseContext, BoostersTable boostersTable, Guid setId, int mtgaBoosterId) : base(databaseContext, boostersTable)
         {
             SetId = setId;
             MtgaBoosterId = mtgaBoosterId;
         }
 
-        internal static BoosterRecord Create(DatabaseContext dataContext, BoostersTable boostersTable, Guid setId, int mtgaBoosterId)
+        internal static BoosterRecord Create(DatabaseContext databaseContext, BoostersTable boostersTable, Guid setId, int mtgaBoosterId)
         {
-            return new BoosterRecord(dataContext, boostersTable, setId, mtgaBoosterId);
+            return new BoosterRecord(databaseContext, boostersTable, setId, mtgaBoosterId);
         }
 
         protected override void UpdateRecord(DbCommand command)

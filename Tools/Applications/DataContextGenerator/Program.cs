@@ -23,8 +23,8 @@ namespace MindSculptor.Tools.Applications.DataContextGenerator
         private void Run()
         {
             var rootNamespace = @"MindSculptor.App.AppDataContext";
-            var rootFolderPath = @"C:\Users\mmhar\source\repos\supreme-dollop\App\MindSculptor.App.AppDataContext";
-            var dataModelPath = @"C:\Users\mmhar\source\repos\supreme-dollop\App\MindSculptor.App.AppDataModel\bin\Debug\netcoreapp3.0\MindSculptor.App.AppDataModel.dll";
+            var rootFolderPath = @"C:\Users\mmhar\source\repos\mmhartnoll\supreme-dollop\App\MindSculptor.App.AppDataContext";
+            var dataModelPath = @"C:\Users\mmhar\source\repos\mmhartnoll\supreme-dollop\App\MindSculptor.App.AppDataModel\bin\Debug\netcoreapp3.0\MindSculptor.App.AppDataModel.dll";
 
             var dataModelAsm = Assembly.LoadFile(dataModelPath);
             var validTypes = dataModelAsm

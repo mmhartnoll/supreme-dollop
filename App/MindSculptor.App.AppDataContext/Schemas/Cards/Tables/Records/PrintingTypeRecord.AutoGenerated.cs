@@ -13,15 +13,15 @@ namespace MindSculptor.App.AppDataContext.Schemas.Cards.Tables.Records
         public Guid Id { get; }
         public string Value { get; }
 
-        private PrintingTypeRecord(DatabaseContext dataContext, PrintingTypesTable printingTypesTable, Guid id, string value) : base(dataContext, printingTypesTable)
+        private PrintingTypeRecord(DatabaseContext databaseContext, PrintingTypesTable printingTypesTable, Guid id, string value) : base(databaseContext, printingTypesTable)
         {
             Id = id;
             Value = value;
         }
 
-        internal static PrintingTypeRecord Create(DatabaseContext dataContext, PrintingTypesTable printingTypesTable, Guid id, string value)
+        internal static PrintingTypeRecord Create(DatabaseContext databaseContext, PrintingTypesTable printingTypesTable, Guid id, string value)
         {
-            return new PrintingTypeRecord(dataContext, printingTypesTable, id, value);
+            return new PrintingTypeRecord(databaseContext, printingTypesTable, id, value);
         }
 
         protected override void UpdateRecord(DbCommand command)

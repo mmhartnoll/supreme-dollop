@@ -1,6 +1,7 @@
 ﻿using Fizzler.Systems.HtmlAgilityPack;
 using HtmlAgilityPack;
 using MindSculptor.Tools.Applications.Harvester.Extensions;
+using MindSculptor.Tools.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;

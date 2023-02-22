@@ -12,28 +12,28 @@ namespace MindSculptor.App.AppDataContext.Schemas.Cards.Tables
 {
     public class CardTypesTable : DatabaseTable<CardTypeRecord, CardTypeRecordExpression>
     {
-        private CardTypesTable(DatabaseContext dataContext) : base(dataContext, "Cards", "CardTypes")
+        private CardTypesTable(DatabaseContext databaseContext) : base(databaseContext, "Cards", "CardTypes")
         {
         }
 
-        internal static CardTypesTable Create(DatabaseContext dataContext)
+        internal static CardTypesTable Create(DatabaseContext databaseContext)
         {
-            return new CardTypesTable(dataContext);
+            return new CardTypesTable(databaseContext);
         }
 
         public CardTypeRecord NewRecord(string value)
         {
-            return Context.Execute(command => NewRecord(command, Guid.NewGuid(), value));
+            return DatabaseContext.Execute(command => NewRecord(command, Guid.NewGuid(), value));
         }
 
         public async Task<CardTypeRecord> NewRecordAsync(string value, CancellationToken cancellationToken = default)
         {
-            return await Context.ExecuteAsync((command, cancellationToken) => NewRecordAsync(command, Guid.NewGuid(), value, cancellationToken), cancellationToken).ConfigureAwait(false);
+            return await DatabaseContext.ExecuteAsync((command, cancellationToken) => NewRecordAsync(command, Guid.NewGuid(), value, cancellationToken), cancellationToken).ConfigureAwait(false);
         }
 
         private CardTypeRecord NewRecord(DbCommand command, Guid id, string value)
         {
-            var newRecord = CardTypeRecord.Create(Context, this, id, value);
+            var newRecord = CardTypeRecord.Create(DatabaseContext, this, id, value);
             command.CommandText = "INSERT INTO [Cards].[CardTypes] ( Id, Value ) VALUES ( @Id, @Value );";
             command.AddParameter("Id", newRecord.Id);
             command.AddParameter("Value", newRecord.Value);
@@ -44,7 +44,7 @@ namespace MindSculptor.App.AppDataContext.Schemas.Cards.Tables
 
         private async Task<CardTypeRecord> NewRecordAsync(DbCommand command, Guid id, string value, CancellationToken cancellationToken)
         {
-            var newRecord = CardTypeRecord.Create(Context, this, id, value);
+            var newRecord = CardTypeRecord.Create(DatabaseContext, this, id, value);
             command.CommandText = "INSERT INTO [Cards].[CardTypes] ( Id, Value ) VALUES ( @Id, @Value );";
             command.AddParameter("Id", newRecord.Id);
             command.AddParameter("Value", newRecord.Value);
@@ -57,7 +57,7 @@ namespace MindSculptor.App.AppDataContext.Schemas.Cards.Tables
         {
             var id = (Guid)dbDataReader["Id"];
             var value = (string)dbDataReader["Value"];
-            return CardTypeRecord.Create(Context, this, id, value);
+            return CardTypeRecord.Create(DatabaseContext, this, id, value);
         }
     }
 }

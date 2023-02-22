@@ -14,10 +14,10 @@ namespace MindSculptor.DataAccess.Context
         where TRecord : DatabaseRecord
         where TExpression : DatabaseRecordExpression, new()
     {
-        protected DatabaseContext Context { get; }
+        protected DatabaseContext DatabaseContext { get; }
 
         protected DatabaseTable(DatabaseContext dataContext, string schemaName, string name) : base(schemaName, name)
-            => Context = dataContext;
+            => DatabaseContext = dataContext;
 
         public RecordQuery<TRecord, TExpression> QueryWhere(Func<TExpression, BooleanValueExpression> expression)
             => NewRecordQuery().QueryWhere(expression);
@@ -26,7 +26,7 @@ namespace MindSculptor.DataAccess.Context
             => NewRecordQuery().OrderBy(expression, sortDirection);
 
         protected RecordQuery<TRecord, TExpression> NewRecordQuery()
-            => RecordQuery<TRecord, TExpression>.Create(Context, this, MapRecordFromDataReader);
+            => RecordQuery<TRecord, TExpression>.Create(DatabaseContext, this, MapRecordFromDataReader);
 
         protected abstract TRecord MapRecordFromDataReader(DbDataReader dataReader);
 

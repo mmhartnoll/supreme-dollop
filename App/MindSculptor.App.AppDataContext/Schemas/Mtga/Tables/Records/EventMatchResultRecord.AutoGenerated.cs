@@ -13,15 +13,15 @@ namespace MindSculptor.App.AppDataContext.Schemas.Mtga.Tables.Records
         public Guid EventMatchId { get; }
         public bool MatchWon { get; }
 
-        private EventMatchResultRecord(DatabaseContext dataContext, EventMatchResultsTable eventMatchResultsTable, Guid eventMatchId, bool matchWon) : base(dataContext, eventMatchResultsTable)
+        private EventMatchResultRecord(DatabaseContext databaseContext, EventMatchResultsTable eventMatchResultsTable, Guid eventMatchId, bool matchWon) : base(databaseContext, eventMatchResultsTable)
         {
             EventMatchId = eventMatchId;
             MatchWon = matchWon;
         }
 
-        internal static EventMatchResultRecord Create(DatabaseContext dataContext, EventMatchResultsTable eventMatchResultsTable, Guid eventMatchId, bool matchWon)
+        internal static EventMatchResultRecord Create(DatabaseContext databaseContext, EventMatchResultsTable eventMatchResultsTable, Guid eventMatchId, bool matchWon)
         {
-            return new EventMatchResultRecord(dataContext, eventMatchResultsTable, eventMatchId, matchWon);
+            return new EventMatchResultRecord(databaseContext, eventMatchResultsTable, eventMatchId, matchWon);
         }
 
         protected override void UpdateRecord(DbCommand command)

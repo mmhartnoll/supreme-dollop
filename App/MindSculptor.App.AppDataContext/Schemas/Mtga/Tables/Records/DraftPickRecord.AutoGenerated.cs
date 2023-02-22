@@ -16,7 +16,7 @@ namespace MindSculptor.App.AppDataContext.Schemas.Mtga.Tables.Records
         public int PickNumber { get; }
         public bool IsFifthCopy { get; }
 
-        private DraftPickRecord(DatabaseContext dataContext, DraftPicksTable draftPicksTable, Guid id, Guid eventEntryId, int packNumber, int pickNumber, bool isFifthCopy) : base(dataContext, draftPicksTable)
+        private DraftPickRecord(DatabaseContext databaseContext, DraftPicksTable draftPicksTable, Guid id, Guid eventEntryId, int packNumber, int pickNumber, bool isFifthCopy) : base(databaseContext, draftPicksTable)
         {
             Id = id;
             EventEntryId = eventEntryId;
@@ -25,9 +25,9 @@ namespace MindSculptor.App.AppDataContext.Schemas.Mtga.Tables.Records
             IsFifthCopy = isFifthCopy;
         }
 
-        internal static DraftPickRecord Create(DatabaseContext dataContext, DraftPicksTable draftPicksTable, Guid id, Guid eventEntryId, int packNumber, int pickNumber, bool isFifthCopy)
+        internal static DraftPickRecord Create(DatabaseContext databaseContext, DraftPicksTable draftPicksTable, Guid id, Guid eventEntryId, int packNumber, int pickNumber, bool isFifthCopy)
         {
-            return new DraftPickRecord(dataContext, draftPicksTable, id, eventEntryId, packNumber, pickNumber, isFifthCopy);
+            return new DraftPickRecord(databaseContext, draftPicksTable, id, eventEntryId, packNumber, pickNumber, isFifthCopy);
         }
 
         protected override void UpdateRecord(DbCommand command)

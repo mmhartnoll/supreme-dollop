@@ -12,38 +12,38 @@ namespace MindSculptor.App.AppDataContext.Schemas.Cards.Tables
 {
     public class FacesTable : DatabaseTable<FaceRecord, FaceRecordExpression>
     {
-        private FacesTable(DatabaseContext dataContext) : base(dataContext, "Cards", "Faces")
+        private FacesTable(DatabaseContext databaseContext) : base(databaseContext, "Cards", "Faces")
         {
         }
 
-        internal static FacesTable Create(DatabaseContext dataContext)
+        internal static FacesTable Create(DatabaseContext databaseContext)
         {
-            return new FacesTable(dataContext);
+            return new FacesTable(databaseContext);
         }
 
         public FaceRecord NewRecord(Guid baseId, string name, bool isPrimaryFace)
         {
-            return Context.Execute(command => NewRecord(command, Guid.NewGuid(), baseId, name, isPrimaryFace));
+            return DatabaseContext.Execute(command => NewRecord(command, Guid.NewGuid(), baseId, name, isPrimaryFace));
         }
 
         public async Task<FaceRecord> NewRecordAsync(Guid baseId, string name, bool isPrimaryFace, CancellationToken cancellationToken = default)
         {
-            return await Context.ExecuteAsync((command, cancellationToken) => NewRecordAsync(command, Guid.NewGuid(), baseId, name, isPrimaryFace, cancellationToken), cancellationToken).ConfigureAwait(false);
+            return await DatabaseContext.ExecuteAsync((command, cancellationToken) => NewRecordAsync(command, Guid.NewGuid(), baseId, name, isPrimaryFace, cancellationToken), cancellationToken).ConfigureAwait(false);
         }
 
         public FaceRecord NewRecord(BaseRecord baseRecord, string name, bool isPrimaryFace)
         {
-            return Context.Execute(command => NewRecord(command, Guid.NewGuid(), baseRecord.Id, name, isPrimaryFace));
+            return DatabaseContext.Execute(command => NewRecord(command, Guid.NewGuid(), baseRecord.Id, name, isPrimaryFace));
         }
 
         public async Task<FaceRecord> NewRecordAsync(BaseRecord baseRecord, string name, bool isPrimaryFace, CancellationToken cancellationToken = default)
         {
-            return await Context.ExecuteAsync((command, cancellationToken) => NewRecordAsync(command, Guid.NewGuid(), baseRecord.Id, name, isPrimaryFace, cancellationToken), cancellationToken).ConfigureAwait(false);
+            return await DatabaseContext.ExecuteAsync((command, cancellationToken) => NewRecordAsync(command, Guid.NewGuid(), baseRecord.Id, name, isPrimaryFace, cancellationToken), cancellationToken).ConfigureAwait(false);
         }
 
         private FaceRecord NewRecord(DbCommand command, Guid id, Guid baseId, string name, bool isPrimaryFace)
         {
-            var newRecord = FaceRecord.Create(Context, this, id, baseId, name, isPrimaryFace);
+            var newRecord = FaceRecord.Create(DatabaseContext, this, id, baseId, name, isPrimaryFace);
             command.CommandText = "INSERT INTO [Cards].[Faces] ( Id, BaseId, Name, IsPrimaryFace ) VALUES ( @Id, @BaseId, @Name, @IsPrimaryFace );";
             command.AddParameter("Id", newRecord.Id);
             command.AddParameter("BaseId", newRecord.BaseId);
@@ -56,7 +56,7 @@ namespace MindSculptor.App.AppDataContext.Schemas.Cards.Tables
 
         private async Task<FaceRecord> NewRecordAsync(DbCommand command, Guid id, Guid baseId, string name, bool isPrimaryFace, CancellationToken cancellationToken)
         {
-            var newRecord = FaceRecord.Create(Context, this, id, baseId, name, isPrimaryFace);
+            var newRecord = FaceRecord.Create(DatabaseContext, this, id, baseId, name, isPrimaryFace);
             command.CommandText = "INSERT INTO [Cards].[Faces] ( Id, BaseId, Name, IsPrimaryFace ) VALUES ( @Id, @BaseId, @Name, @IsPrimaryFace );";
             command.AddParameter("Id", newRecord.Id);
             command.AddParameter("BaseId", newRecord.BaseId);
@@ -73,7 +73,7 @@ namespace MindSculptor.App.AppDataContext.Schemas.Cards.Tables
             var baseId = (Guid)dbDataReader["BaseId"];
             var name = (string)dbDataReader["Name"];
             var isPrimaryFace = (bool)dbDataReader["IsPrimaryFace"];
-            return FaceRecord.Create(Context, this, id, baseId, name, isPrimaryFace);
+            return FaceRecord.Create(DatabaseContext, this, id, baseId, name, isPrimaryFace);
         }
     }
 }

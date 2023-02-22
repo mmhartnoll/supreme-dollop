@@ -25,16 +25,16 @@ namespace MindSculptor.App.AppDataContext.Schemas.Mtga.Tables.Records
             }
         }
 
-        private ProfileHasBoostersRecord(DatabaseContext dataContext, ProfileHasBoostersTable profileHasBoostersTable, Guid profileId, Guid boosterId, int count) : base(dataContext, profileHasBoostersTable)
+        private ProfileHasBoostersRecord(DatabaseContext databaseContext, ProfileHasBoostersTable profileHasBoostersTable, Guid profileId, Guid boosterId, int count) : base(databaseContext, profileHasBoostersTable)
         {
             ProfileId = profileId;
             BoosterId = boosterId;
             _count = count;
         }
 
-        internal static ProfileHasBoostersRecord Create(DatabaseContext dataContext, ProfileHasBoostersTable profileHasBoostersTable, Guid profileId, Guid boosterId, int count)
+        internal static ProfileHasBoostersRecord Create(DatabaseContext databaseContext, ProfileHasBoostersTable profileHasBoostersTable, Guid profileId, Guid boosterId, int count)
         {
-            return new ProfileHasBoostersRecord(dataContext, profileHasBoostersTable, profileId, boosterId, count);
+            return new ProfileHasBoostersRecord(databaseContext, profileHasBoostersTable, profileId, boosterId, count);
         }
 
         protected override void UpdateRecord(DbCommand command)

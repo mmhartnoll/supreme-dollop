@@ -12,28 +12,28 @@ namespace MindSculptor.App.AppDataContext.Schemas.Cards.Tables
 {
     public class SetsTable : DatabaseTable<SetRecord, SetRecordExpression>
     {
-        private SetsTable(DatabaseContext dataContext) : base(dataContext, "Cards", "Sets")
+        private SetsTable(DatabaseContext databaseContext) : base(databaseContext, "Cards", "Sets")
         {
         }
 
-        internal static SetsTable Create(DatabaseContext dataContext)
+        internal static SetsTable Create(DatabaseContext databaseContext)
         {
-            return new SetsTable(dataContext);
+            return new SetsTable(databaseContext);
         }
 
         public SetRecord NewRecord(string name, string code, string? codeExtension, int releaseYear, int releaseMonth, int? releaseDay)
         {
-            return Context.Execute(command => NewRecord(command, Guid.NewGuid(), name, code, codeExtension, releaseYear, releaseMonth, releaseDay));
+            return DatabaseContext.Execute(command => NewRecord(command, Guid.NewGuid(), name, code, codeExtension, releaseYear, releaseMonth, releaseDay));
         }
 
         public async Task<SetRecord> NewRecordAsync(string name, string code, string? codeExtension, int releaseYear, int releaseMonth, int? releaseDay, CancellationToken cancellationToken = default)
         {
-            return await Context.ExecuteAsync((command, cancellationToken) => NewRecordAsync(command, Guid.NewGuid(), name, code, codeExtension, releaseYear, releaseMonth, releaseDay, cancellationToken), cancellationToken).ConfigureAwait(false);
+            return await DatabaseContext.ExecuteAsync((command, cancellationToken) => NewRecordAsync(command, Guid.NewGuid(), name, code, codeExtension, releaseYear, releaseMonth, releaseDay, cancellationToken), cancellationToken).ConfigureAwait(false);
         }
 
         private SetRecord NewRecord(DbCommand command, Guid id, string name, string code, string? codeExtension, int releaseYear, int releaseMonth, int? releaseDay)
         {
-            var newRecord = SetRecord.Create(Context, this, id, name, code, codeExtension, releaseYear, releaseMonth, releaseDay);
+            var newRecord = SetRecord.Create(DatabaseContext, this, id, name, code, codeExtension, releaseYear, releaseMonth, releaseDay);
             command.CommandText = "INSERT INTO [Cards].[Sets] ( Id, Name, Code, CodeExtension, ReleaseYear, ReleaseMonth, ReleaseDay ) VALUES ( @Id, @Name, @Code, @CodeExtension, @ReleaseYear, @ReleaseMonth, @ReleaseDay );";
             command.AddParameter("Id", newRecord.Id);
             command.AddParameter("Name", newRecord.Name);
@@ -49,7 +49,7 @@ namespace MindSculptor.App.AppDataContext.Schemas.Cards.Tables
 
         private async Task<SetRecord> NewRecordAsync(DbCommand command, Guid id, string name, string code, string? codeExtension, int releaseYear, int releaseMonth, int? releaseDay, CancellationToken cancellationToken)
         {
-            var newRecord = SetRecord.Create(Context, this, id, name, code, codeExtension, releaseYear, releaseMonth, releaseDay);
+            var newRecord = SetRecord.Create(DatabaseContext, this, id, name, code, codeExtension, releaseYear, releaseMonth, releaseDay);
             command.CommandText = "INSERT INTO [Cards].[Sets] ( Id, Name, Code, CodeExtension, ReleaseYear, ReleaseMonth, ReleaseDay ) VALUES ( @Id, @Name, @Code, @CodeExtension, @ReleaseYear, @ReleaseMonth, @ReleaseDay );";
             command.AddParameter("Id", newRecord.Id);
             command.AddParameter("Name", newRecord.Name);
@@ -72,7 +72,7 @@ namespace MindSculptor.App.AppDataContext.Schemas.Cards.Tables
             var releaseYear = Convert.ToInt32(dbDataReader["ReleaseYear"]);
             var releaseMonth = Convert.ToInt32(dbDataReader["ReleaseMonth"]);
             var releaseDay = dbDataReader["ReleaseDay"] == DBNull.Value ? null : (int?)Convert.ToInt32(dbDataReader["ReleaseDay"]);
-            return SetRecord.Create(Context, this, id, name, code, codeExtension, releaseYear, releaseMonth, releaseDay);
+            return SetRecord.Create(DatabaseContext, this, id, name, code, codeExtension, releaseYear, releaseMonth, releaseDay);
         }
     }
 }

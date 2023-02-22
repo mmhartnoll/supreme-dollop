@@ -12,38 +12,38 @@ namespace MindSculptor.App.AppDataContext.Schemas.Cards.Tables
 {
     public class FaceHasMainTypesTable : DatabaseTable<FaceHasMainTypeRecord, FaceHasMainTypeRecordExpression>
     {
-        private FaceHasMainTypesTable(DatabaseContext dataContext) : base(dataContext, "Cards", "FaceHasMainTypes")
+        private FaceHasMainTypesTable(DatabaseContext databaseContext) : base(databaseContext, "Cards", "FaceHasMainTypes")
         {
         }
 
-        internal static FaceHasMainTypesTable Create(DatabaseContext dataContext)
+        internal static FaceHasMainTypesTable Create(DatabaseContext databaseContext)
         {
-            return new FaceHasMainTypesTable(dataContext);
+            return new FaceHasMainTypesTable(databaseContext);
         }
 
         public FaceHasMainTypeRecord NewRecord(Guid faceId, Guid mainTypeId, int ordinal)
         {
-            return Context.Execute(command => NewRecord(command, faceId, mainTypeId, ordinal));
+            return DatabaseContext.Execute(command => NewRecord(command, faceId, mainTypeId, ordinal));
         }
 
         public async Task<FaceHasMainTypeRecord> NewRecordAsync(Guid faceId, Guid mainTypeId, int ordinal, CancellationToken cancellationToken = default)
         {
-            return await Context.ExecuteAsync((command, cancellationToken) => NewRecordAsync(command, faceId, mainTypeId, ordinal, cancellationToken), cancellationToken).ConfigureAwait(false);
+            return await DatabaseContext.ExecuteAsync((command, cancellationToken) => NewRecordAsync(command, faceId, mainTypeId, ordinal, cancellationToken), cancellationToken).ConfigureAwait(false);
         }
 
         public FaceHasMainTypeRecord NewRecord(FaceRecord faceRecord, MainTypeRecord mainTypeRecord, int ordinal)
         {
-            return Context.Execute(command => NewRecord(command, faceRecord.Id, mainTypeRecord.Id, ordinal));
+            return DatabaseContext.Execute(command => NewRecord(command, faceRecord.Id, mainTypeRecord.Id, ordinal));
         }
 
         public async Task<FaceHasMainTypeRecord> NewRecordAsync(FaceRecord faceRecord, MainTypeRecord mainTypeRecord, int ordinal, CancellationToken cancellationToken = default)
         {
-            return await Context.ExecuteAsync((command, cancellationToken) => NewRecordAsync(command, faceRecord.Id, mainTypeRecord.Id, ordinal, cancellationToken), cancellationToken).ConfigureAwait(false);
+            return await DatabaseContext.ExecuteAsync((command, cancellationToken) => NewRecordAsync(command, faceRecord.Id, mainTypeRecord.Id, ordinal, cancellationToken), cancellationToken).ConfigureAwait(false);
         }
 
         private FaceHasMainTypeRecord NewRecord(DbCommand command, Guid faceId, Guid mainTypeId, int ordinal)
         {
-            var newRecord = FaceHasMainTypeRecord.Create(Context, this, faceId, mainTypeId, ordinal);
+            var newRecord = FaceHasMainTypeRecord.Create(DatabaseContext, this, faceId, mainTypeId, ordinal);
             command.CommandText = "INSERT INTO [Cards].[FaceHasMainTypes] ( FaceId, MainTypeId, Ordinal ) VALUES ( @FaceId, @MainTypeId, @Ordinal );";
             command.AddParameter("FaceId", newRecord.FaceId);
             command.AddParameter("MainTypeId", newRecord.MainTypeId);
@@ -55,7 +55,7 @@ namespace MindSculptor.App.AppDataContext.Schemas.Cards.Tables
 
         private async Task<FaceHasMainTypeRecord> NewRecordAsync(DbCommand command, Guid faceId, Guid mainTypeId, int ordinal, CancellationToken cancellationToken)
         {
-            var newRecord = FaceHasMainTypeRecord.Create(Context, this, faceId, mainTypeId, ordinal);
+            var newRecord = FaceHasMainTypeRecord.Create(DatabaseContext, this, faceId, mainTypeId, ordinal);
             command.CommandText = "INSERT INTO [Cards].[FaceHasMainTypes] ( FaceId, MainTypeId, Ordinal ) VALUES ( @FaceId, @MainTypeId, @Ordinal );";
             command.AddParameter("FaceId", newRecord.FaceId);
             command.AddParameter("MainTypeId", newRecord.MainTypeId);
@@ -70,7 +70,7 @@ namespace MindSculptor.App.AppDataContext.Schemas.Cards.Tables
             var faceId = (Guid)dbDataReader["FaceId"];
             var mainTypeId = (Guid)dbDataReader["MainTypeId"];
             var ordinal = Convert.ToInt32(dbDataReader["Ordinal"]);
-            return FaceHasMainTypeRecord.Create(Context, this, faceId, mainTypeId, ordinal);
+            return FaceHasMainTypeRecord.Create(DatabaseContext, this, faceId, mainTypeId, ordinal);
         }
     }
 }

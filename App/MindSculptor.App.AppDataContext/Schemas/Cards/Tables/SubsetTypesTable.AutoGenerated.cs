@@ -12,28 +12,28 @@ namespace MindSculptor.App.AppDataContext.Schemas.Cards.Tables
 {
     public class SubsetTypesTable : DatabaseTable<SubsetTypeRecord, SubsetTypeRecordExpression>
     {
-        private SubsetTypesTable(DatabaseContext dataContext) : base(dataContext, "Cards", "SubsetTypes")
+        private SubsetTypesTable(DatabaseContext databaseContext) : base(databaseContext, "Cards", "SubsetTypes")
         {
         }
 
-        internal static SubsetTypesTable Create(DatabaseContext dataContext)
+        internal static SubsetTypesTable Create(DatabaseContext databaseContext)
         {
-            return new SubsetTypesTable(dataContext);
+            return new SubsetTypesTable(databaseContext);
         }
 
         public SubsetTypeRecord NewRecord(string value, string collectorsNumberFormat)
         {
-            return Context.Execute(command => NewRecord(command, Guid.NewGuid(), value, collectorsNumberFormat));
+            return DatabaseContext.Execute(command => NewRecord(command, Guid.NewGuid(), value, collectorsNumberFormat));
         }
 
         public async Task<SubsetTypeRecord> NewRecordAsync(string value, string collectorsNumberFormat, CancellationToken cancellationToken = default)
         {
-            return await Context.ExecuteAsync((command, cancellationToken) => NewRecordAsync(command, Guid.NewGuid(), value, collectorsNumberFormat, cancellationToken), cancellationToken).ConfigureAwait(false);
+            return await DatabaseContext.ExecuteAsync((command, cancellationToken) => NewRecordAsync(command, Guid.NewGuid(), value, collectorsNumberFormat, cancellationToken), cancellationToken).ConfigureAwait(false);
         }
 
         private SubsetTypeRecord NewRecord(DbCommand command, Guid id, string value, string collectorsNumberFormat)
         {
-            var newRecord = SubsetTypeRecord.Create(Context, this, id, value, collectorsNumberFormat);
+            var newRecord = SubsetTypeRecord.Create(DatabaseContext, this, id, value, collectorsNumberFormat);
             command.CommandText = "INSERT INTO [Cards].[SubsetTypes] ( Id, Value, CollectorsNumberFormat ) VALUES ( @Id, @Value, @CollectorsNumberFormat );";
             command.AddParameter("Id", newRecord.Id);
             command.AddParameter("Value", newRecord.Value);
@@ -45,7 +45,7 @@ namespace MindSculptor.App.AppDataContext.Schemas.Cards.Tables
 
         private async Task<SubsetTypeRecord> NewRecordAsync(DbCommand command, Guid id, string value, string collectorsNumberFormat, CancellationToken cancellationToken)
         {
-            var newRecord = SubsetTypeRecord.Create(Context, this, id, value, collectorsNumberFormat);
+            var newRecord = SubsetTypeRecord.Create(DatabaseContext, this, id, value, collectorsNumberFormat);
             command.CommandText = "INSERT INTO [Cards].[SubsetTypes] ( Id, Value, CollectorsNumberFormat ) VALUES ( @Id, @Value, @CollectorsNumberFormat );";
             command.AddParameter("Id", newRecord.Id);
             command.AddParameter("Value", newRecord.Value);
@@ -60,7 +60,7 @@ namespace MindSculptor.App.AppDataContext.Schemas.Cards.Tables
             var id = (Guid)dbDataReader["Id"];
             var value = (string)dbDataReader["Value"];
             var collectorsNumberFormat = (string)dbDataReader["CollectorsNumberFormat"];
-            return SubsetTypeRecord.Create(Context, this, id, value, collectorsNumberFormat);
+            return SubsetTypeRecord.Create(DatabaseContext, this, id, value, collectorsNumberFormat);
         }
     }
 }

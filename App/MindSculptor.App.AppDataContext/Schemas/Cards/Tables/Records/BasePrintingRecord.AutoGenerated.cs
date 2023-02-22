@@ -26,7 +26,7 @@ namespace MindSculptor.App.AppDataContext.Schemas.Cards.Tables.Records
             }
         }
 
-        private BasePrintingRecord(DatabaseContext dataContext, BasePrintingsTable basePrintingsTable, Guid id, Guid setInclusionId, Guid printingTypeId, Guid artistId) : base(dataContext, basePrintingsTable)
+        private BasePrintingRecord(DatabaseContext databaseContext, BasePrintingsTable basePrintingsTable, Guid id, Guid setInclusionId, Guid printingTypeId, Guid artistId) : base(databaseContext, basePrintingsTable)
         {
             Id = id;
             SetInclusionId = setInclusionId;
@@ -34,9 +34,9 @@ namespace MindSculptor.App.AppDataContext.Schemas.Cards.Tables.Records
             _artistId = artistId;
         }
 
-        internal static BasePrintingRecord Create(DatabaseContext dataContext, BasePrintingsTable basePrintingsTable, Guid id, Guid setInclusionId, Guid printingTypeId, Guid artistId)
+        internal static BasePrintingRecord Create(DatabaseContext databaseContext, BasePrintingsTable basePrintingsTable, Guid id, Guid setInclusionId, Guid printingTypeId, Guid artistId)
         {
-            return new BasePrintingRecord(dataContext, basePrintingsTable, id, setInclusionId, printingTypeId, artistId);
+            return new BasePrintingRecord(databaseContext, basePrintingsTable, id, setInclusionId, printingTypeId, artistId);
         }
 
         protected override void UpdateRecord(DbCommand command)

@@ -13,15 +13,15 @@ namespace MindSculptor.App.AppDataContext.Schemas.Mtga.Tables.Records
         public Guid Id { get; }
         public int MtgaCardId { get; }
 
-        private DigitalCardRecord(DatabaseContext dataContext, DigitalCardsTable digitalCardsTable, Guid id, int mtgaCardId) : base(dataContext, digitalCardsTable)
+        private DigitalCardRecord(DatabaseContext databaseContext, DigitalCardsTable digitalCardsTable, Guid id, int mtgaCardId) : base(databaseContext, digitalCardsTable)
         {
             Id = id;
             MtgaCardId = mtgaCardId;
         }
 
-        internal static DigitalCardRecord Create(DatabaseContext dataContext, DigitalCardsTable digitalCardsTable, Guid id, int mtgaCardId)
+        internal static DigitalCardRecord Create(DatabaseContext databaseContext, DigitalCardsTable digitalCardsTable, Guid id, int mtgaCardId)
         {
-            return new DigitalCardRecord(dataContext, digitalCardsTable, id, mtgaCardId);
+            return new DigitalCardRecord(databaseContext, digitalCardsTable, id, mtgaCardId);
         }
 
         protected override void UpdateRecord(DbCommand command)

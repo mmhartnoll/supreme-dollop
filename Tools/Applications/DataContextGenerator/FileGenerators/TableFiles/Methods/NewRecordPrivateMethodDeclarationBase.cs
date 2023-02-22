@@ -30,7 +30,7 @@ namespace MindSculptor.Tools.Applications.DataContextGenerator.FileGenerators.Ta
         protected override IEnumerable<StatementSyntax> GetMethodStatementSyntaxes()
         {
             var argumentList = new List<ArgumentSyntax>();
-            argumentList.Add(SyntaxFactory.Argument(SyntaxFactory.IdentifierName("DataContext")));
+            argumentList.Add(SyntaxFactory.Argument(SyntaxFactory.IdentifierName("DatabaseContext")));
             argumentList.Add(SyntaxFactory.Argument(SyntaxFactory.ParseExpression("this")));
             foreach (var fieldDefinition in recordDefinition.Fields)
             {
@@ -47,7 +47,7 @@ namespace MindSculptor.Tools.Applications.DataContextGenerator.FileGenerators.Ta
             yield return SyntaxFactory.LocalDeclarationStatement(variableDeclarationSyntax);
 
             var equalsValueClause = SyntaxFactory.EqualsValueClause(SyntaxFactory.InvocationExpression(
-                SyntaxFactory.IdentifierName("DataContext.Connection.CreateCommand")));
+                SyntaxFactory.IdentifierName("DatabaseContext.Connection.CreateCommand")));
             var variableDeclaration = SyntaxFactory.VariableDeclaration(TypeDeclaration.Var)
                 .AddVariables(SyntaxFactory.VariableDeclarator(
                     SyntaxFactory.Identifier("command"),

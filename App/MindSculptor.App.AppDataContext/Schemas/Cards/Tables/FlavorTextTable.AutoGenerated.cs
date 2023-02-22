@@ -12,38 +12,38 @@ namespace MindSculptor.App.AppDataContext.Schemas.Cards.Tables
 {
     public class FlavorTextTable : DatabaseTable<FlavorTextRecord, FlavorTextRecordExpression>
     {
-        private FlavorTextTable(DatabaseContext dataContext) : base(dataContext, "Cards", "FlavorText")
+        private FlavorTextTable(DatabaseContext databaseContext) : base(databaseContext, "Cards", "FlavorText")
         {
         }
 
-        internal static FlavorTextTable Create(DatabaseContext dataContext)
+        internal static FlavorTextTable Create(DatabaseContext databaseContext)
         {
-            return new FlavorTextTable(dataContext);
+            return new FlavorTextTable(databaseContext);
         }
 
         public FlavorTextRecord NewRecord(Guid facePrintingId, string value)
         {
-            return Context.Execute(command => NewRecord(command, facePrintingId, value));
+            return DatabaseContext.Execute(command => NewRecord(command, facePrintingId, value));
         }
 
         public async Task<FlavorTextRecord> NewRecordAsync(Guid facePrintingId, string value, CancellationToken cancellationToken = default)
         {
-            return await Context.ExecuteAsync((command, cancellationToken) => NewRecordAsync(command, facePrintingId, value, cancellationToken), cancellationToken).ConfigureAwait(false);
+            return await DatabaseContext.ExecuteAsync((command, cancellationToken) => NewRecordAsync(command, facePrintingId, value, cancellationToken), cancellationToken).ConfigureAwait(false);
         }
 
         public FlavorTextRecord NewRecord(FacePrintingRecord facePrintingRecord, string value)
         {
-            return Context.Execute(command => NewRecord(command, facePrintingRecord.Id, value));
+            return DatabaseContext.Execute(command => NewRecord(command, facePrintingRecord.Id, value));
         }
 
         public async Task<FlavorTextRecord> NewRecordAsync(FacePrintingRecord facePrintingRecord, string value, CancellationToken cancellationToken = default)
         {
-            return await Context.ExecuteAsync((command, cancellationToken) => NewRecordAsync(command, facePrintingRecord.Id, value, cancellationToken), cancellationToken).ConfigureAwait(false);
+            return await DatabaseContext.ExecuteAsync((command, cancellationToken) => NewRecordAsync(command, facePrintingRecord.Id, value, cancellationToken), cancellationToken).ConfigureAwait(false);
         }
 
         private FlavorTextRecord NewRecord(DbCommand command, Guid facePrintingId, string value)
         {
-            var newRecord = FlavorTextRecord.Create(Context, this, facePrintingId, value);
+            var newRecord = FlavorTextRecord.Create(DatabaseContext, this, facePrintingId, value);
             command.CommandText = "INSERT INTO [Cards].[FlavorText] ( FacePrintingId, Value ) VALUES ( @FacePrintingId, @Value );";
             command.AddParameter("FacePrintingId", newRecord.FacePrintingId);
             command.AddParameter("Value", newRecord.Value);
@@ -54,7 +54,7 @@ namespace MindSculptor.App.AppDataContext.Schemas.Cards.Tables
 
         private async Task<FlavorTextRecord> NewRecordAsync(DbCommand command, Guid facePrintingId, string value, CancellationToken cancellationToken)
         {
-            var newRecord = FlavorTextRecord.Create(Context, this, facePrintingId, value);
+            var newRecord = FlavorTextRecord.Create(DatabaseContext, this, facePrintingId, value);
             command.CommandText = "INSERT INTO [Cards].[FlavorText] ( FacePrintingId, Value ) VALUES ( @FacePrintingId, @Value );";
             command.AddParameter("FacePrintingId", newRecord.FacePrintingId);
             command.AddParameter("Value", newRecord.Value);
@@ -67,7 +67,7 @@ namespace MindSculptor.App.AppDataContext.Schemas.Cards.Tables
         {
             var facePrintingId = (Guid)dbDataReader["FacePrintingId"];
             var value = (string)dbDataReader["Value"];
-            return FlavorTextRecord.Create(Context, this, facePrintingId, value);
+            return FlavorTextRecord.Create(DatabaseContext, this, facePrintingId, value);
         }
     }
 }

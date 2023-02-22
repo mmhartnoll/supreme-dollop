@@ -12,28 +12,28 @@ namespace MindSculptor.App.AppDataContext.Schemas.Cards.Tables
 {
     public class SuperTypesTable : DatabaseTable<SuperTypeRecord, SuperTypeRecordExpression>
     {
-        private SuperTypesTable(DatabaseContext dataContext) : base(dataContext, "Cards", "SuperTypes")
+        private SuperTypesTable(DatabaseContext databaseContext) : base(databaseContext, "Cards", "SuperTypes")
         {
         }
 
-        internal static SuperTypesTable Create(DatabaseContext dataContext)
+        internal static SuperTypesTable Create(DatabaseContext databaseContext)
         {
-            return new SuperTypesTable(dataContext);
+            return new SuperTypesTable(databaseContext);
         }
 
         public SuperTypeRecord NewRecord(string value)
         {
-            return Context.Execute(command => NewRecord(command, Guid.NewGuid(), value));
+            return DatabaseContext.Execute(command => NewRecord(command, Guid.NewGuid(), value));
         }
 
         public async Task<SuperTypeRecord> NewRecordAsync(string value, CancellationToken cancellationToken = default)
         {
-            return await Context.ExecuteAsync((command, cancellationToken) => NewRecordAsync(command, Guid.NewGuid(), value, cancellationToken), cancellationToken).ConfigureAwait(false);
+            return await DatabaseContext.ExecuteAsync((command, cancellationToken) => NewRecordAsync(command, Guid.NewGuid(), value, cancellationToken), cancellationToken).ConfigureAwait(false);
         }
 
         private SuperTypeRecord NewRecord(DbCommand command, Guid id, string value)
         {
-            var newRecord = SuperTypeRecord.Create(Context, this, id, value);
+            var newRecord = SuperTypeRecord.Create(DatabaseContext, this, id, value);
             command.CommandText = "INSERT INTO [Cards].[SuperTypes] ( Id, Value ) VALUES ( @Id, @Value );";
             command.AddParameter("Id", newRecord.Id);
             command.AddParameter("Value", newRecord.Value);
@@ -44,7 +44,7 @@ namespace MindSculptor.App.AppDataContext.Schemas.Cards.Tables
 
         private async Task<SuperTypeRecord> NewRecordAsync(DbCommand command, Guid id, string value, CancellationToken cancellationToken)
         {
-            var newRecord = SuperTypeRecord.Create(Context, this, id, value);
+            var newRecord = SuperTypeRecord.Create(DatabaseContext, this, id, value);
             command.CommandText = "INSERT INTO [Cards].[SuperTypes] ( Id, Value ) VALUES ( @Id, @Value );";
             command.AddParameter("Id", newRecord.Id);
             command.AddParameter("Value", newRecord.Value);
@@ -57,7 +57,7 @@ namespace MindSculptor.App.AppDataContext.Schemas.Cards.Tables
         {
             var id = (Guid)dbDataReader["Id"];
             var value = (string)dbDataReader["Value"];
-            return SuperTypeRecord.Create(Context, this, id, value);
+            return SuperTypeRecord.Create(DatabaseContext, this, id, value);
         }
     }
 }

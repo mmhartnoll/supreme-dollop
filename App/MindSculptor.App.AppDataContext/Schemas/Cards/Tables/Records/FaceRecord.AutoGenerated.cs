@@ -15,7 +15,7 @@ namespace MindSculptor.App.AppDataContext.Schemas.Cards.Tables.Records
         public string Name { get; }
         public bool IsPrimaryFace { get; }
 
-        private FaceRecord(DatabaseContext dataContext, FacesTable facesTable, Guid id, Guid baseId, string name, bool isPrimaryFace) : base(dataContext, facesTable)
+        private FaceRecord(DatabaseContext databaseContext, FacesTable facesTable, Guid id, Guid baseId, string name, bool isPrimaryFace) : base(databaseContext, facesTable)
         {
             Id = id;
             BaseId = baseId;
@@ -23,9 +23,9 @@ namespace MindSculptor.App.AppDataContext.Schemas.Cards.Tables.Records
             IsPrimaryFace = isPrimaryFace;
         }
 
-        internal static FaceRecord Create(DatabaseContext dataContext, FacesTable facesTable, Guid id, Guid baseId, string name, bool isPrimaryFace)
+        internal static FaceRecord Create(DatabaseContext databaseContext, FacesTable facesTable, Guid id, Guid baseId, string name, bool isPrimaryFace)
         {
-            return new FaceRecord(dataContext, facesTable, id, baseId, name, isPrimaryFace);
+            return new FaceRecord(databaseContext, facesTable, id, baseId, name, isPrimaryFace);
         }
 
         protected override void UpdateRecord(DbCommand command)

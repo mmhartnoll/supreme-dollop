@@ -12,38 +12,38 @@ namespace MindSculptor.App.AppDataContext.Schemas.Mtga.Tables
 {
     public class ActiveEventEntriesTable : DatabaseTable<ActiveEventEntryRecord, ActiveEventEntryRecordExpression>
     {
-        private ActiveEventEntriesTable(DatabaseContext dataContext) : base(dataContext, "Mtga", "ActiveEventEntries")
+        private ActiveEventEntriesTable(DatabaseContext databaseContext) : base(databaseContext, "Mtga", "ActiveEventEntries")
         {
         }
 
-        internal static ActiveEventEntriesTable Create(DatabaseContext dataContext)
+        internal static ActiveEventEntriesTable Create(DatabaseContext databaseContext)
         {
-            return new ActiveEventEntriesTable(dataContext);
+            return new ActiveEventEntriesTable(databaseContext);
         }
 
         public ActiveEventEntryRecord NewRecord(Guid eventEntryId, Guid eventId, Guid profileId)
         {
-            return Context.Execute(command => NewRecord(command, eventEntryId, eventId, profileId));
+            return DatabaseContext.Execute(command => NewRecord(command, eventEntryId, eventId, profileId));
         }
 
         public async Task<ActiveEventEntryRecord> NewRecordAsync(Guid eventEntryId, Guid eventId, Guid profileId, CancellationToken cancellationToken = default)
         {
-            return await Context.ExecuteAsync((command, cancellationToken) => NewRecordAsync(command, eventEntryId, eventId, profileId, cancellationToken), cancellationToken).ConfigureAwait(false);
+            return await DatabaseContext.ExecuteAsync((command, cancellationToken) => NewRecordAsync(command, eventEntryId, eventId, profileId, cancellationToken), cancellationToken).ConfigureAwait(false);
         }
 
         public ActiveEventEntryRecord NewRecord(EventEntryRecord eventEntryRecord)
         {
-            return Context.Execute(command => NewRecord(command, eventEntryRecord.Id, eventEntryRecord.EventId, eventEntryRecord.ProfileId));
+            return DatabaseContext.Execute(command => NewRecord(command, eventEntryRecord.Id, eventEntryRecord.EventId, eventEntryRecord.ProfileId));
         }
 
         public async Task<ActiveEventEntryRecord> NewRecordAsync(EventEntryRecord eventEntryRecord, CancellationToken cancellationToken = default)
         {
-            return await Context.ExecuteAsync((command, cancellationToken) => NewRecordAsync(command, eventEntryRecord.Id, eventEntryRecord.EventId, eventEntryRecord.ProfileId, cancellationToken), cancellationToken).ConfigureAwait(false);
+            return await DatabaseContext.ExecuteAsync((command, cancellationToken) => NewRecordAsync(command, eventEntryRecord.Id, eventEntryRecord.EventId, eventEntryRecord.ProfileId, cancellationToken), cancellationToken).ConfigureAwait(false);
         }
 
         private ActiveEventEntryRecord NewRecord(DbCommand command, Guid eventEntryId, Guid eventId, Guid profileId)
         {
-            var newRecord = ActiveEventEntryRecord.Create(Context, this, eventEntryId, eventId, profileId);
+            var newRecord = ActiveEventEntryRecord.Create(DatabaseContext, this, eventEntryId, eventId, profileId);
             command.CommandText = "INSERT INTO [Mtga].[ActiveEventEntries] ( EventEntryId, EventId, ProfileId ) VALUES ( @EventEntryId, @EventId, @ProfileId );";
             command.AddParameter("EventEntryId", newRecord.EventEntryId);
             command.AddParameter("EventId", newRecord.EventId);
@@ -55,7 +55,7 @@ namespace MindSculptor.App.AppDataContext.Schemas.Mtga.Tables
 
         private async Task<ActiveEventEntryRecord> NewRecordAsync(DbCommand command, Guid eventEntryId, Guid eventId, Guid profileId, CancellationToken cancellationToken)
         {
-            var newRecord = ActiveEventEntryRecord.Create(Context, this, eventEntryId, eventId, profileId);
+            var newRecord = ActiveEventEntryRecord.Create(DatabaseContext, this, eventEntryId, eventId, profileId);
             command.CommandText = "INSERT INTO [Mtga].[ActiveEventEntries] ( EventEntryId, EventId, ProfileId ) VALUES ( @EventEntryId, @EventId, @ProfileId );";
             command.AddParameter("EventEntryId", newRecord.EventEntryId);
             command.AddParameter("EventId", newRecord.EventId);
@@ -70,7 +70,7 @@ namespace MindSculptor.App.AppDataContext.Schemas.Mtga.Tables
             var eventEntryId = (Guid)dbDataReader["EventEntryId"];
             var eventId = (Guid)dbDataReader["EventId"];
             var profileId = (Guid)dbDataReader["ProfileId"];
-            return ActiveEventEntryRecord.Create(Context, this, eventEntryId, eventId, profileId);
+            return ActiveEventEntryRecord.Create(DatabaseContext, this, eventEntryId, eventId, profileId);
         }
     }
 }

@@ -57,7 +57,7 @@ namespace MindSculptor.App.AppDataContext.Schemas.Cards.Tables.Records
             }
         }
 
-        private PowerToughnessRecord(DatabaseContext dataContext, PowerToughnessTable powerToughnessTable, Guid faceId, int basePower, string powerFormat, int baseToughness, string toughnessFormat) : base(dataContext, powerToughnessTable)
+        private PowerToughnessRecord(DatabaseContext databaseContext, PowerToughnessTable powerToughnessTable, Guid faceId, int basePower, string powerFormat, int baseToughness, string toughnessFormat) : base(databaseContext, powerToughnessTable)
         {
             FaceId = faceId;
             _basePower = basePower;
@@ -66,9 +66,9 @@ namespace MindSculptor.App.AppDataContext.Schemas.Cards.Tables.Records
             _toughnessFormat = toughnessFormat;
         }
 
-        internal static PowerToughnessRecord Create(DatabaseContext dataContext, PowerToughnessTable powerToughnessTable, Guid faceId, int basePower, string powerFormat, int baseToughness, string toughnessFormat)
+        internal static PowerToughnessRecord Create(DatabaseContext databaseContext, PowerToughnessTable powerToughnessTable, Guid faceId, int basePower, string powerFormat, int baseToughness, string toughnessFormat)
         {
-            return new PowerToughnessRecord(dataContext, powerToughnessTable, faceId, basePower, powerFormat, baseToughness, toughnessFormat);
+            return new PowerToughnessRecord(databaseContext, powerToughnessTable, faceId, basePower, powerFormat, baseToughness, toughnessFormat);
         }
 
         protected override void UpdateRecord(DbCommand command)

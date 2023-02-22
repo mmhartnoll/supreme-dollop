@@ -26,7 +26,7 @@ namespace MindSculptor.App.AppDataContext.Schemas.Cards.Tables.Records
             }
         }
 
-        private FacePrintingRecord(DatabaseContext dataContext, FacePrintingsTable facePrintingsTable, Guid id, Guid basePrintingId, Guid faceId, Guid imageId) : base(dataContext, facePrintingsTable)
+        private FacePrintingRecord(DatabaseContext databaseContext, FacePrintingsTable facePrintingsTable, Guid id, Guid basePrintingId, Guid faceId, Guid imageId) : base(databaseContext, facePrintingsTable)
         {
             Id = id;
             BasePrintingId = basePrintingId;
@@ -34,9 +34,9 @@ namespace MindSculptor.App.AppDataContext.Schemas.Cards.Tables.Records
             _imageId = imageId;
         }
 
-        internal static FacePrintingRecord Create(DatabaseContext dataContext, FacePrintingsTable facePrintingsTable, Guid id, Guid basePrintingId, Guid faceId, Guid imageId)
+        internal static FacePrintingRecord Create(DatabaseContext databaseContext, FacePrintingsTable facePrintingsTable, Guid id, Guid basePrintingId, Guid faceId, Guid imageId)
         {
-            return new FacePrintingRecord(dataContext, facePrintingsTable, id, basePrintingId, faceId, imageId);
+            return new FacePrintingRecord(databaseContext, facePrintingsTable, id, basePrintingId, faceId, imageId);
         }
 
         protected override void UpdateRecord(DbCommand command)

@@ -78,7 +78,7 @@ namespace MindSculptor.Tools.Applications.DataContextGenerator.FileGenerators.Ta
                 SyntaxFactory.Parameter(SyntaxFactory.Identifier("command")), 
                 newRecordInvocationExpression);
 
-            var executeInvocationExpression = SyntaxFactory.InvocationExpression(SyntaxFactory.IdentifierName("DataContext.Execute"))
+            var executeInvocationExpression = SyntaxFactory.InvocationExpression(SyntaxFactory.IdentifierName("DatabaseContext.Execute"))
                 .AddArgumentListArguments(SyntaxFactory.Argument(lambdaExpression));
 
             yield return SyntaxFactory.ReturnStatement(executeInvocationExpression);

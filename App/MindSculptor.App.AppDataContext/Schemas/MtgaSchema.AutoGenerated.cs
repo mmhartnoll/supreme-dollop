@@ -55,29 +55,29 @@ namespace MindSculptor.App.AppDataContext.Schemas
 
         public ProfilesTable Profiles => profilesTableLoader.Value;
 
-        private MtgaSchema(DatabaseContext dataContext) : base(dataContext)
+        private MtgaSchema(DatabaseContext databaseContext) : base(databaseContext)
         {
-            activeEventEntriesTableLoader = new Lazy<ActiveEventEntriesTable>(() => ActiveEventEntriesTable.Create(Context));
-            boostersTableLoader = new Lazy<BoostersTable>(() => BoostersTable.Create(Context));
-            digitalCardsTableLoader = new Lazy<DigitalCardsTable>(() => DigitalCardsTable.Create(Context));
-            draftEventsTableLoader = new Lazy<DraftEventsTable>(() => DraftEventsTable.Create(Context));
-            draftPickOptionsTableLoader = new Lazy<DraftPickOptionsTable>(() => DraftPickOptionsTable.Create(Context));
-            draftPicksTableLoader = new Lazy<DraftPicksTable>(() => DraftPicksTable.Create(Context));
-            eventEntriesTableLoader = new Lazy<EventEntriesTable>(() => EventEntriesTable.Create(Context));
-            eventMatchesTableLoader = new Lazy<EventMatchesTable>(() => EventMatchesTable.Create(Context));
-            eventMatchGamesTableLoader = new Lazy<EventMatchGamesTable>(() => EventMatchGamesTable.Create(Context));
-            eventMatchResultsTableLoader = new Lazy<EventMatchResultsTable>(() => EventMatchResultsTable.Create(Context));
-            eventsTableLoader = new Lazy<EventsTable>(() => EventsTable.Create(Context));
-            playersTableLoader = new Lazy<PlayersTable>(() => PlayersTable.Create(Context));
-            profileHasBoostersTableLoader = new Lazy<ProfileHasBoostersTable>(() => ProfileHasBoostersTable.Create(Context));
-            profileHasCardsTableLoader = new Lazy<ProfileHasCardsTable>(() => ProfileHasCardsTable.Create(Context));
-            profileInventoriesTableLoader = new Lazy<ProfileInventoriesTable>(() => ProfileInventoriesTable.Create(Context));
-            profilesTableLoader = new Lazy<ProfilesTable>(() => ProfilesTable.Create(Context));
+            activeEventEntriesTableLoader = new Lazy<ActiveEventEntriesTable>(() => ActiveEventEntriesTable.Create(databaseContext));
+            boostersTableLoader = new Lazy<BoostersTable>(() => BoostersTable.Create(databaseContext));
+            digitalCardsTableLoader = new Lazy<DigitalCardsTable>(() => DigitalCardsTable.Create(databaseContext));
+            draftEventsTableLoader = new Lazy<DraftEventsTable>(() => DraftEventsTable.Create(databaseContext));
+            draftPickOptionsTableLoader = new Lazy<DraftPickOptionsTable>(() => DraftPickOptionsTable.Create(databaseContext));
+            draftPicksTableLoader = new Lazy<DraftPicksTable>(() => DraftPicksTable.Create(databaseContext));
+            eventEntriesTableLoader = new Lazy<EventEntriesTable>(() => EventEntriesTable.Create(databaseContext));
+            eventMatchesTableLoader = new Lazy<EventMatchesTable>(() => EventMatchesTable.Create(databaseContext));
+            eventMatchGamesTableLoader = new Lazy<EventMatchGamesTable>(() => EventMatchGamesTable.Create(databaseContext));
+            eventMatchResultsTableLoader = new Lazy<EventMatchResultsTable>(() => EventMatchResultsTable.Create(databaseContext));
+            eventsTableLoader = new Lazy<EventsTable>(() => EventsTable.Create(databaseContext));
+            playersTableLoader = new Lazy<PlayersTable>(() => PlayersTable.Create(databaseContext));
+            profileHasBoostersTableLoader = new Lazy<ProfileHasBoostersTable>(() => ProfileHasBoostersTable.Create(databaseContext));
+            profileHasCardsTableLoader = new Lazy<ProfileHasCardsTable>(() => ProfileHasCardsTable.Create(databaseContext));
+            profileInventoriesTableLoader = new Lazy<ProfileInventoriesTable>(() => ProfileInventoriesTable.Create(databaseContext));
+            profilesTableLoader = new Lazy<ProfilesTable>(() => ProfilesTable.Create(databaseContext));
         }
 
-        internal static MtgaSchema Create(DatabaseContext dataContext)
+        internal static MtgaSchema Create(DatabaseContext databaseContext)
         {
-            return new MtgaSchema(dataContext);
+            return new MtgaSchema(databaseContext);
         }
     }
 }

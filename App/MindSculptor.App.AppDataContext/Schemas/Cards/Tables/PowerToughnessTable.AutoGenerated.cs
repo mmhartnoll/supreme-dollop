@@ -12,38 +12,38 @@ namespace MindSculptor.App.AppDataContext.Schemas.Cards.Tables
 {
     public class PowerToughnessTable : DatabaseTable<PowerToughnessRecord, PowerToughnessRecordExpression>
     {
-        private PowerToughnessTable(DatabaseContext dataContext) : base(dataContext, "Cards", "PowerToughness")
+        private PowerToughnessTable(DatabaseContext databaseContext) : base(databaseContext, "Cards", "PowerToughness")
         {
         }
 
-        internal static PowerToughnessTable Create(DatabaseContext dataContext)
+        internal static PowerToughnessTable Create(DatabaseContext databaseContext)
         {
-            return new PowerToughnessTable(dataContext);
+            return new PowerToughnessTable(databaseContext);
         }
 
         public PowerToughnessRecord NewRecord(Guid faceId, int basePower, string powerFormat, int baseToughness, string toughnessFormat)
         {
-            return Context.Execute(command => NewRecord(command, faceId, basePower, powerFormat, baseToughness, toughnessFormat));
+            return DatabaseContext.Execute(command => NewRecord(command, faceId, basePower, powerFormat, baseToughness, toughnessFormat));
         }
 
         public async Task<PowerToughnessRecord> NewRecordAsync(Guid faceId, int basePower, string powerFormat, int baseToughness, string toughnessFormat, CancellationToken cancellationToken = default)
         {
-            return await Context.ExecuteAsync((command, cancellationToken) => NewRecordAsync(command, faceId, basePower, powerFormat, baseToughness, toughnessFormat, cancellationToken), cancellationToken).ConfigureAwait(false);
+            return await DatabaseContext.ExecuteAsync((command, cancellationToken) => NewRecordAsync(command, faceId, basePower, powerFormat, baseToughness, toughnessFormat, cancellationToken), cancellationToken).ConfigureAwait(false);
         }
 
         public PowerToughnessRecord NewRecord(FaceRecord faceRecord, int basePower, string powerFormat, int baseToughness, string toughnessFormat)
         {
-            return Context.Execute(command => NewRecord(command, faceRecord.Id, basePower, powerFormat, baseToughness, toughnessFormat));
+            return DatabaseContext.Execute(command => NewRecord(command, faceRecord.Id, basePower, powerFormat, baseToughness, toughnessFormat));
         }
 
         public async Task<PowerToughnessRecord> NewRecordAsync(FaceRecord faceRecord, int basePower, string powerFormat, int baseToughness, string toughnessFormat, CancellationToken cancellationToken = default)
         {
-            return await Context.ExecuteAsync((command, cancellationToken) => NewRecordAsync(command, faceRecord.Id, basePower, powerFormat, baseToughness, toughnessFormat, cancellationToken), cancellationToken).ConfigureAwait(false);
+            return await DatabaseContext.ExecuteAsync((command, cancellationToken) => NewRecordAsync(command, faceRecord.Id, basePower, powerFormat, baseToughness, toughnessFormat, cancellationToken), cancellationToken).ConfigureAwait(false);
         }
 
         private PowerToughnessRecord NewRecord(DbCommand command, Guid faceId, int basePower, string powerFormat, int baseToughness, string toughnessFormat)
         {
-            var newRecord = PowerToughnessRecord.Create(Context, this, faceId, basePower, powerFormat, baseToughness, toughnessFormat);
+            var newRecord = PowerToughnessRecord.Create(DatabaseContext, this, faceId, basePower, powerFormat, baseToughness, toughnessFormat);
             command.CommandText = "INSERT INTO [Cards].[PowerToughness] ( FaceId, BasePower, PowerFormat, BaseToughness, ToughnessFormat ) VALUES ( @FaceId, @BasePower, @PowerFormat, @BaseToughness, @ToughnessFormat );";
             command.AddParameter("FaceId", newRecord.FaceId);
             command.AddParameter("BasePower", newRecord.BasePower);
@@ -57,7 +57,7 @@ namespace MindSculptor.App.AppDataContext.Schemas.Cards.Tables
 
         private async Task<PowerToughnessRecord> NewRecordAsync(DbCommand command, Guid faceId, int basePower, string powerFormat, int baseToughness, string toughnessFormat, CancellationToken cancellationToken)
         {
-            var newRecord = PowerToughnessRecord.Create(Context, this, faceId, basePower, powerFormat, baseToughness, toughnessFormat);
+            var newRecord = PowerToughnessRecord.Create(DatabaseContext, this, faceId, basePower, powerFormat, baseToughness, toughnessFormat);
             command.CommandText = "INSERT INTO [Cards].[PowerToughness] ( FaceId, BasePower, PowerFormat, BaseToughness, ToughnessFormat ) VALUES ( @FaceId, @BasePower, @PowerFormat, @BaseToughness, @ToughnessFormat );";
             command.AddParameter("FaceId", newRecord.FaceId);
             command.AddParameter("BasePower", newRecord.BasePower);
@@ -76,7 +76,7 @@ namespace MindSculptor.App.AppDataContext.Schemas.Cards.Tables
             var powerFormat = (string)dbDataReader["PowerFormat"];
             var baseToughness = Convert.ToInt32(dbDataReader["BaseToughness"]);
             var toughnessFormat = (string)dbDataReader["ToughnessFormat"];
-            return PowerToughnessRecord.Create(Context, this, faceId, basePower, powerFormat, baseToughness, toughnessFormat);
+            return PowerToughnessRecord.Create(DatabaseContext, this, faceId, basePower, powerFormat, baseToughness, toughnessFormat);
         }
     }
 }

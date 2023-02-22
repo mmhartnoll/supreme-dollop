@@ -90,7 +90,7 @@ namespace MindSculptor.App.AppDataContext.Schemas.Mtga.Tables.Records
             }
         }
 
-        private ProfileInventoryRecord(DatabaseContext dataContext, ProfileInventoriesTable profileInventoriesTable, Guid profileId, int mythicRareWildcardCount, int rareWildcardCount, int uncommonWildcardCount, int commonWildcardCount, int goldCount, int gemCount, decimal vaultProgress) : base(dataContext, profileInventoriesTable)
+        private ProfileInventoryRecord(DatabaseContext databaseContext, ProfileInventoriesTable profileInventoriesTable, Guid profileId, int mythicRareWildcardCount, int rareWildcardCount, int uncommonWildcardCount, int commonWildcardCount, int goldCount, int gemCount, decimal vaultProgress) : base(databaseContext, profileInventoriesTable)
         {
             ProfileId = profileId;
             _mythicRareWildcardCount = mythicRareWildcardCount;
@@ -102,9 +102,9 @@ namespace MindSculptor.App.AppDataContext.Schemas.Mtga.Tables.Records
             _vaultProgress = vaultProgress;
         }
 
-        internal static ProfileInventoryRecord Create(DatabaseContext dataContext, ProfileInventoriesTable profileInventoriesTable, Guid profileId, int mythicRareWildcardCount, int rareWildcardCount, int uncommonWildcardCount, int commonWildcardCount, int goldCount, int gemCount, decimal vaultProgress)
+        internal static ProfileInventoryRecord Create(DatabaseContext databaseContext, ProfileInventoriesTable profileInventoriesTable, Guid profileId, int mythicRareWildcardCount, int rareWildcardCount, int uncommonWildcardCount, int commonWildcardCount, int goldCount, int gemCount, decimal vaultProgress)
         {
-            return new ProfileInventoryRecord(dataContext, profileInventoriesTable, profileId, mythicRareWildcardCount, rareWildcardCount, uncommonWildcardCount, commonWildcardCount, goldCount, gemCount, vaultProgress);
+            return new ProfileInventoryRecord(databaseContext, profileInventoriesTable, profileId, mythicRareWildcardCount, rareWildcardCount, uncommonWildcardCount, commonWildcardCount, goldCount, gemCount, vaultProgress);
         }
 
         protected override void UpdateRecord(DbCommand command)

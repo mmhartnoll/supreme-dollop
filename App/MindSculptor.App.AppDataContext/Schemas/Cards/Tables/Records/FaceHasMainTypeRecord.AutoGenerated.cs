@@ -25,16 +25,16 @@ namespace MindSculptor.App.AppDataContext.Schemas.Cards.Tables.Records
             }
         }
 
-        private FaceHasMainTypeRecord(DatabaseContext dataContext, FaceHasMainTypesTable faceHasMainTypesTable, Guid faceId, Guid mainTypeId, int ordinal) : base(dataContext, faceHasMainTypesTable)
+        private FaceHasMainTypeRecord(DatabaseContext databaseContext, FaceHasMainTypesTable faceHasMainTypesTable, Guid faceId, Guid mainTypeId, int ordinal) : base(databaseContext, faceHasMainTypesTable)
         {
             FaceId = faceId;
             MainTypeId = mainTypeId;
             _ordinal = ordinal;
         }
 
-        internal static FaceHasMainTypeRecord Create(DatabaseContext dataContext, FaceHasMainTypesTable faceHasMainTypesTable, Guid faceId, Guid mainTypeId, int ordinal)
+        internal static FaceHasMainTypeRecord Create(DatabaseContext databaseContext, FaceHasMainTypesTable faceHasMainTypesTable, Guid faceId, Guid mainTypeId, int ordinal)
         {
-            return new FaceHasMainTypeRecord(dataContext, faceHasMainTypesTable, faceId, mainTypeId, ordinal);
+            return new FaceHasMainTypeRecord(databaseContext, faceHasMainTypesTable, faceId, mainTypeId, ordinal);
         }
 
         protected override void UpdateRecord(DbCommand command)

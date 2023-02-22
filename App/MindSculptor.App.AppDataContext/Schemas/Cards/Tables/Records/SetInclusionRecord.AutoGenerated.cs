@@ -18,7 +18,7 @@ namespace MindSculptor.App.AppDataContext.Schemas.Cards.Tables.Records
         public int LogicalOrdinal { get; }
         public int? CollectorsNumber { get; }
 
-        private SetInclusionRecord(DatabaseContext dataContext, SetInclusionsTable setInclusionsTable, Guid id, Guid setId, Guid subsetTypeId, Guid baseId, Guid rarityTypeId, int logicalOrdinal, int? collectorsNumber) : base(dataContext, setInclusionsTable)
+        private SetInclusionRecord(DatabaseContext databaseContext, SetInclusionsTable setInclusionsTable, Guid id, Guid setId, Guid subsetTypeId, Guid baseId, Guid rarityTypeId, int logicalOrdinal, int? collectorsNumber) : base(databaseContext, setInclusionsTable)
         {
             Id = id;
             SetId = setId;
@@ -29,9 +29,9 @@ namespace MindSculptor.App.AppDataContext.Schemas.Cards.Tables.Records
             CollectorsNumber = collectorsNumber;
         }
 
-        internal static SetInclusionRecord Create(DatabaseContext dataContext, SetInclusionsTable setInclusionsTable, Guid id, Guid setId, Guid subsetTypeId, Guid baseId, Guid rarityTypeId, int logicalOrdinal, int? collectorsNumber)
+        internal static SetInclusionRecord Create(DatabaseContext databaseContext, SetInclusionsTable setInclusionsTable, Guid id, Guid setId, Guid subsetTypeId, Guid baseId, Guid rarityTypeId, int logicalOrdinal, int? collectorsNumber)
         {
-            return new SetInclusionRecord(dataContext, setInclusionsTable, id, setId, subsetTypeId, baseId, rarityTypeId, logicalOrdinal, collectorsNumber);
+            return new SetInclusionRecord(databaseContext, setInclusionsTable, id, setId, subsetTypeId, baseId, rarityTypeId, logicalOrdinal, collectorsNumber);
         }
 
         protected override void UpdateRecord(DbCommand command)

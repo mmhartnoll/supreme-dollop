@@ -13,15 +13,15 @@ namespace MindSculptor.App.AppDataContext.Schemas.Cards.Tables.Records
         public Guid Id { get; }
         public string Value { get; }
 
-        private MainTypeRecord(DatabaseContext dataContext, MainTypesTable mainTypesTable, Guid id, string value) : base(dataContext, mainTypesTable)
+        private MainTypeRecord(DatabaseContext databaseContext, MainTypesTable mainTypesTable, Guid id, string value) : base(databaseContext, mainTypesTable)
         {
             Id = id;
             Value = value;
         }
 
-        internal static MainTypeRecord Create(DatabaseContext dataContext, MainTypesTable mainTypesTable, Guid id, string value)
+        internal static MainTypeRecord Create(DatabaseContext databaseContext, MainTypesTable mainTypesTable, Guid id, string value)
         {
-            return new MainTypeRecord(dataContext, mainTypesTable, id, value);
+            return new MainTypeRecord(databaseContext, mainTypesTable, id, value);
         }
 
         protected override void UpdateRecord(DbCommand command)

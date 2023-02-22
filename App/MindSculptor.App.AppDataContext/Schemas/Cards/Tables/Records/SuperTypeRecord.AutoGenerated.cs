@@ -13,15 +13,15 @@ namespace MindSculptor.App.AppDataContext.Schemas.Cards.Tables.Records
         public Guid Id { get; }
         public string Value { get; }
 
-        private SuperTypeRecord(DatabaseContext dataContext, SuperTypesTable superTypesTable, Guid id, string value) : base(dataContext, superTypesTable)
+        private SuperTypeRecord(DatabaseContext databaseContext, SuperTypesTable superTypesTable, Guid id, string value) : base(databaseContext, superTypesTable)
         {
             Id = id;
             Value = value;
         }
 
-        internal static SuperTypeRecord Create(DatabaseContext dataContext, SuperTypesTable superTypesTable, Guid id, string value)
+        internal static SuperTypeRecord Create(DatabaseContext databaseContext, SuperTypesTable superTypesTable, Guid id, string value)
         {
-            return new SuperTypeRecord(dataContext, superTypesTable, id, value);
+            return new SuperTypeRecord(databaseContext, superTypesTable, id, value);
         }
 
         protected override void UpdateRecord(DbCommand command)

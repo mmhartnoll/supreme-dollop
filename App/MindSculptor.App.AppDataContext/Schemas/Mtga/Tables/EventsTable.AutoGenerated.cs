@@ -12,28 +12,28 @@ namespace MindSculptor.App.AppDataContext.Schemas.Mtga.Tables
 {
     public class EventsTable : DatabaseTable<EventRecord, EventRecordExpression>
     {
-        private EventsTable(DatabaseContext dataContext) : base(dataContext, "Mtga", "Events")
+        private EventsTable(DatabaseContext databaseContext) : base(databaseContext, "Mtga", "Events")
         {
         }
 
-        internal static EventsTable Create(DatabaseContext dataContext)
+        internal static EventsTable Create(DatabaseContext databaseContext)
         {
-            return new EventsTable(dataContext);
+            return new EventsTable(databaseContext);
         }
 
         public EventRecord NewRecord(string mtgaEventId)
         {
-            return Context.Execute(command => NewRecord(command, Guid.NewGuid(), mtgaEventId));
+            return DatabaseContext.Execute(command => NewRecord(command, Guid.NewGuid(), mtgaEventId));
         }
 
         public async Task<EventRecord> NewRecordAsync(string mtgaEventId, CancellationToken cancellationToken = default)
         {
-            return await Context.ExecuteAsync((command, cancellationToken) => NewRecordAsync(command, Guid.NewGuid(), mtgaEventId, cancellationToken), cancellationToken).ConfigureAwait(false);
+            return await DatabaseContext.ExecuteAsync((command, cancellationToken) => NewRecordAsync(command, Guid.NewGuid(), mtgaEventId, cancellationToken), cancellationToken).ConfigureAwait(false);
         }
 
         private EventRecord NewRecord(DbCommand command, Guid id, string mtgaEventId)
         {
-            var newRecord = EventRecord.Create(Context, this, id, mtgaEventId);
+            var newRecord = EventRecord.Create(DatabaseContext, this, id, mtgaEventId);
             command.CommandText = "INSERT INTO [Mtga].[Events] ( Id, MtgaEventId ) VALUES ( @Id, @MtgaEventId );";
             command.AddParameter("Id", newRecord.Id);
             command.AddParameter("MtgaEventId", newRecord.MtgaEventId);
@@ -44,7 +44,7 @@ namespace MindSculptor.App.AppDataContext.Schemas.Mtga.Tables
 
         private async Task<EventRecord> NewRecordAsync(DbCommand command, Guid id, string mtgaEventId, CancellationToken cancellationToken)
         {
-            var newRecord = EventRecord.Create(Context, this, id, mtgaEventId);
+            var newRecord = EventRecord.Create(DatabaseContext, this, id, mtgaEventId);
             command.CommandText = "INSERT INTO [Mtga].[Events] ( Id, MtgaEventId ) VALUES ( @Id, @MtgaEventId );";
             command.AddParameter("Id", newRecord.Id);
             command.AddParameter("MtgaEventId", newRecord.MtgaEventId);
@@ -57,7 +57,7 @@ namespace MindSculptor.App.AppDataContext.Schemas.Mtga.Tables
         {
             var id = (Guid)dbDataReader["Id"];
             var mtgaEventId = (string)dbDataReader["MtgaEventId"];
-            return EventRecord.Create(Context, this, id, mtgaEventId);
+            return EventRecord.Create(DatabaseContext, this, id, mtgaEventId);
         }
     }
 }

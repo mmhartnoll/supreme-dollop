@@ -12,28 +12,28 @@ namespace MindSculptor.App.AppDataContext.Schemas.Cards.Tables
 {
     public class ArtistsTable : DatabaseTable<ArtistRecord, ArtistRecordExpression>
     {
-        private ArtistsTable(DatabaseContext dataContext) : base(dataContext, "Cards", "Artists")
+        private ArtistsTable(DatabaseContext databaseContext) : base(databaseContext, "Cards", "Artists")
         {
         }
 
-        internal static ArtistsTable Create(DatabaseContext dataContext)
+        internal static ArtistsTable Create(DatabaseContext databaseContext)
         {
-            return new ArtistsTable(dataContext);
+            return new ArtistsTable(databaseContext);
         }
 
         public ArtistRecord NewRecord(string name)
         {
-            return Context.Execute(command => NewRecord(command, Guid.NewGuid(), name));
+            return DatabaseContext.Execute(command => NewRecord(command, Guid.NewGuid(), name));
         }
 
         public async Task<ArtistRecord> NewRecordAsync(string name, CancellationToken cancellationToken = default)
         {
-            return await Context.ExecuteAsync((command, cancellationToken) => NewRecordAsync(command, Guid.NewGuid(), name, cancellationToken), cancellationToken).ConfigureAwait(false);
+            return await DatabaseContext.ExecuteAsync((command, cancellationToken) => NewRecordAsync(command, Guid.NewGuid(), name, cancellationToken), cancellationToken).ConfigureAwait(false);
         }
 
         private ArtistRecord NewRecord(DbCommand command, Guid id, string name)
         {
-            var newRecord = ArtistRecord.Create(Context, this, id, name);
+            var newRecord = ArtistRecord.Create(DatabaseContext, this, id, name);
             command.CommandText = "INSERT INTO [Cards].[Artists] ( Id, Name ) VALUES ( @Id, @Name );";
             command.AddParameter("Id", newRecord.Id);
             command.AddParameter("Name", newRecord.Name);
@@ -44,7 +44,7 @@ namespace MindSculptor.App.AppDataContext.Schemas.Cards.Tables
 
         private async Task<ArtistRecord> NewRecordAsync(DbCommand command, Guid id, string name, CancellationToken cancellationToken)
         {
-            var newRecord = ArtistRecord.Create(Context, this, id, name);
+            var newRecord = ArtistRecord.Create(DatabaseContext, this, id, name);
             command.CommandText = "INSERT INTO [Cards].[Artists] ( Id, Name ) VALUES ( @Id, @Name );";
             command.AddParameter("Id", newRecord.Id);
             command.AddParameter("Name", newRecord.Name);
@@ -57,7 +57,7 @@ namespace MindSculptor.App.AppDataContext.Schemas.Cards.Tables
         {
             var id = (Guid)dbDataReader["Id"];
             var name = (string)dbDataReader["Name"];
-            return ArtistRecord.Create(Context, this, id, name);
+            return ArtistRecord.Create(DatabaseContext, this, id, name);
         }
     }
 }

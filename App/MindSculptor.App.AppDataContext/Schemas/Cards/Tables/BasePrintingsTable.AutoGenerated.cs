@@ -12,38 +12,38 @@ namespace MindSculptor.App.AppDataContext.Schemas.Cards.Tables
 {
     public class BasePrintingsTable : DatabaseTable<BasePrintingRecord, BasePrintingRecordExpression>
     {
-        private BasePrintingsTable(DatabaseContext dataContext) : base(dataContext, "Cards", "BasePrintings")
+        private BasePrintingsTable(DatabaseContext databaseContext) : base(databaseContext, "Cards", "BasePrintings")
         {
         }
 
-        internal static BasePrintingsTable Create(DatabaseContext dataContext)
+        internal static BasePrintingsTable Create(DatabaseContext databaseContext)
         {
-            return new BasePrintingsTable(dataContext);
+            return new BasePrintingsTable(databaseContext);
         }
 
         public BasePrintingRecord NewRecord(Guid setInclusionId, Guid printingTypeId, Guid artistId)
         {
-            return Context.Execute(command => NewRecord(command, Guid.NewGuid(), setInclusionId, printingTypeId, artistId));
+            return DatabaseContext.Execute(command => NewRecord(command, Guid.NewGuid(), setInclusionId, printingTypeId, artistId));
         }
 
         public async Task<BasePrintingRecord> NewRecordAsync(Guid setInclusionId, Guid printingTypeId, Guid artistId, CancellationToken cancellationToken = default)
         {
-            return await Context.ExecuteAsync((command, cancellationToken) => NewRecordAsync(command, Guid.NewGuid(), setInclusionId, printingTypeId, artistId, cancellationToken), cancellationToken).ConfigureAwait(false);
+            return await DatabaseContext.ExecuteAsync((command, cancellationToken) => NewRecordAsync(command, Guid.NewGuid(), setInclusionId, printingTypeId, artistId, cancellationToken), cancellationToken).ConfigureAwait(false);
         }
 
         public BasePrintingRecord NewRecord(SetInclusionRecord setInclusionRecord, PrintingTypeRecord printingTypeRecord, ArtistRecord artistRecord)
         {
-            return Context.Execute(command => NewRecord(command, Guid.NewGuid(), setInclusionRecord.Id, printingTypeRecord.Id, artistRecord.Id));
+            return DatabaseContext.Execute(command => NewRecord(command, Guid.NewGuid(), setInclusionRecord.Id, printingTypeRecord.Id, artistRecord.Id));
         }
 
         public async Task<BasePrintingRecord> NewRecordAsync(SetInclusionRecord setInclusionRecord, PrintingTypeRecord printingTypeRecord, ArtistRecord artistRecord, CancellationToken cancellationToken = default)
         {
-            return await Context.ExecuteAsync((command, cancellationToken) => NewRecordAsync(command, Guid.NewGuid(), setInclusionRecord.Id, printingTypeRecord.Id, artistRecord.Id, cancellationToken), cancellationToken).ConfigureAwait(false);
+            return await DatabaseContext.ExecuteAsync((command, cancellationToken) => NewRecordAsync(command, Guid.NewGuid(), setInclusionRecord.Id, printingTypeRecord.Id, artistRecord.Id, cancellationToken), cancellationToken).ConfigureAwait(false);
         }
 
         private BasePrintingRecord NewRecord(DbCommand command, Guid id, Guid setInclusionId, Guid printingTypeId, Guid artistId)
         {
-            var newRecord = BasePrintingRecord.Create(Context, this, id, setInclusionId, printingTypeId, artistId);
+            var newRecord = BasePrintingRecord.Create(DatabaseContext, this, id, setInclusionId, printingTypeId, artistId);
             command.CommandText = "INSERT INTO [Cards].[BasePrintings] ( Id, SetInclusionId, PrintingTypeId, ArtistId ) VALUES ( @Id, @SetInclusionId, @PrintingTypeId, @ArtistId );";
             command.AddParameter("Id", newRecord.Id);
             command.AddParameter("SetInclusionId", newRecord.SetInclusionId);
@@ -56,7 +56,7 @@ namespace MindSculptor.App.AppDataContext.Schemas.Cards.Tables
 
         private async Task<BasePrintingRecord> NewRecordAsync(DbCommand command, Guid id, Guid setInclusionId, Guid printingTypeId, Guid artistId, CancellationToken cancellationToken)
         {
-            var newRecord = BasePrintingRecord.Create(Context, this, id, setInclusionId, printingTypeId, artistId);
+            var newRecord = BasePrintingRecord.Create(DatabaseContext, this, id, setInclusionId, printingTypeId, artistId);
             command.CommandText = "INSERT INTO [Cards].[BasePrintings] ( Id, SetInclusionId, PrintingTypeId, ArtistId ) VALUES ( @Id, @SetInclusionId, @PrintingTypeId, @ArtistId );";
             command.AddParameter("Id", newRecord.Id);
             command.AddParameter("SetInclusionId", newRecord.SetInclusionId);
@@ -73,7 +73,7 @@ namespace MindSculptor.App.AppDataContext.Schemas.Cards.Tables
             var setInclusionId = (Guid)dbDataReader["SetInclusionId"];
             var printingTypeId = (Guid)dbDataReader["PrintingTypeId"];
             var artistId = (Guid)dbDataReader["ArtistId"];
-            return BasePrintingRecord.Create(Context, this, id, setInclusionId, printingTypeId, artistId);
+            return BasePrintingRecord.Create(DatabaseContext, this, id, setInclusionId, printingTypeId, artistId);
         }
     }
 }

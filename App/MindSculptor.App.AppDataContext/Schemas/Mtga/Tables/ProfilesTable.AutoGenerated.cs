@@ -12,38 +12,38 @@ namespace MindSculptor.App.AppDataContext.Schemas.Mtga.Tables
 {
     public class ProfilesTable : DatabaseTable<ProfileRecord, ProfileRecordExpression>
     {
-        private ProfilesTable(DatabaseContext dataContext) : base(dataContext, "Mtga", "Profiles")
+        private ProfilesTable(DatabaseContext databaseContext) : base(databaseContext, "Mtga", "Profiles")
         {
         }
 
-        internal static ProfilesTable Create(DatabaseContext dataContext)
+        internal static ProfilesTable Create(DatabaseContext databaseContext)
         {
-            return new ProfilesTable(dataContext);
+            return new ProfilesTable(databaseContext);
         }
 
         public ProfileRecord NewRecord(Guid id)
         {
-            return Context.Execute(command => NewRecord(command, id));
+            return DatabaseContext.Execute(command => NewRecord(command, id));
         }
 
         public async Task<ProfileRecord> NewRecordAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            return await Context.ExecuteAsync((command, cancellationToken) => NewRecordAsync(command, id, cancellationToken), cancellationToken).ConfigureAwait(false);
+            return await DatabaseContext.ExecuteAsync((command, cancellationToken) => NewRecordAsync(command, id, cancellationToken), cancellationToken).ConfigureAwait(false);
         }
 
         public ProfileRecord NewRecord(PlayerRecord playerRecord)
         {
-            return Context.Execute(command => NewRecord(command, playerRecord.Id));
+            return DatabaseContext.Execute(command => NewRecord(command, playerRecord.Id));
         }
 
         public async Task<ProfileRecord> NewRecordAsync(PlayerRecord playerRecord, CancellationToken cancellationToken = default)
         {
-            return await Context.ExecuteAsync((command, cancellationToken) => NewRecordAsync(command, playerRecord.Id, cancellationToken), cancellationToken).ConfigureAwait(false);
+            return await DatabaseContext.ExecuteAsync((command, cancellationToken) => NewRecordAsync(command, playerRecord.Id, cancellationToken), cancellationToken).ConfigureAwait(false);
         }
 
         private ProfileRecord NewRecord(DbCommand command, Guid id)
         {
-            var newRecord = ProfileRecord.Create(Context, this, id);
+            var newRecord = ProfileRecord.Create(DatabaseContext, this, id);
             command.CommandText = "INSERT INTO [Mtga].[Profiles] ( Id ) VALUES ( @Id );";
             command.AddParameter("Id", newRecord.Id);
             command.ExecuteNonQuery();
@@ -53,7 +53,7 @@ namespace MindSculptor.App.AppDataContext.Schemas.Mtga.Tables
 
         private async Task<ProfileRecord> NewRecordAsync(DbCommand command, Guid id, CancellationToken cancellationToken)
         {
-            var newRecord = ProfileRecord.Create(Context, this, id);
+            var newRecord = ProfileRecord.Create(DatabaseContext, this, id);
             command.CommandText = "INSERT INTO [Mtga].[Profiles] ( Id ) VALUES ( @Id );";
             command.AddParameter("Id", newRecord.Id);
             await command.ExecuteNonQueryAsync(cancellationToken).ConfigureAwait(false);
@@ -64,7 +64,7 @@ namespace MindSculptor.App.AppDataContext.Schemas.Mtga.Tables
         protected override ProfileRecord MapRecordFromDataReader(DbDataReader dbDataReader)
         {
             var id = (Guid)dbDataReader["Id"];
-            return ProfileRecord.Create(Context, this, id);
+            return ProfileRecord.Create(DatabaseContext, this, id);
         }
     }
 }

@@ -14,16 +14,16 @@ namespace MindSculptor.App.AppDataContext.Schemas.Cards.Tables.Records
         public string Value { get; }
         public string CollectorsNumberFormat { get; }
 
-        private SubsetTypeRecord(DatabaseContext dataContext, SubsetTypesTable subsetTypesTable, Guid id, string value, string collectorsNumberFormat) : base(dataContext, subsetTypesTable)
+        private SubsetTypeRecord(DatabaseContext databaseContext, SubsetTypesTable subsetTypesTable, Guid id, string value, string collectorsNumberFormat) : base(databaseContext, subsetTypesTable)
         {
             Id = id;
             Value = value;
             CollectorsNumberFormat = collectorsNumberFormat;
         }
 
-        internal static SubsetTypeRecord Create(DatabaseContext dataContext, SubsetTypesTable subsetTypesTable, Guid id, string value, string collectorsNumberFormat)
+        internal static SubsetTypeRecord Create(DatabaseContext databaseContext, SubsetTypesTable subsetTypesTable, Guid id, string value, string collectorsNumberFormat)
         {
-            return new SubsetTypeRecord(dataContext, subsetTypesTable, id, value, collectorsNumberFormat);
+            return new SubsetTypeRecord(databaseContext, subsetTypesTable, id, value, collectorsNumberFormat);
         }
 
         protected override void UpdateRecord(DbCommand command)

@@ -25,16 +25,16 @@ namespace MindSculptor.App.AppDataContext.Schemas.Cards.Tables.Records
             }
         }
 
-        private FaceHasSuperTypeRecord(DatabaseContext dataContext, FaceHasSuperTypesTable faceHasSuperTypesTable, Guid faceId, Guid superTypeId, int ordinal) : base(dataContext, faceHasSuperTypesTable)
+        private FaceHasSuperTypeRecord(DatabaseContext databaseContext, FaceHasSuperTypesTable faceHasSuperTypesTable, Guid faceId, Guid superTypeId, int ordinal) : base(databaseContext, faceHasSuperTypesTable)
         {
             FaceId = faceId;
             SuperTypeId = superTypeId;
             _ordinal = ordinal;
         }
 
-        internal static FaceHasSuperTypeRecord Create(DatabaseContext dataContext, FaceHasSuperTypesTable faceHasSuperTypesTable, Guid faceId, Guid superTypeId, int ordinal)
+        internal static FaceHasSuperTypeRecord Create(DatabaseContext databaseContext, FaceHasSuperTypesTable faceHasSuperTypesTable, Guid faceId, Guid superTypeId, int ordinal)
         {
-            return new FaceHasSuperTypeRecord(dataContext, faceHasSuperTypesTable, faceId, superTypeId, ordinal);
+            return new FaceHasSuperTypeRecord(databaseContext, faceHasSuperTypesTable, faceId, superTypeId, ordinal);
         }
 
         protected override void UpdateRecord(DbCommand command)

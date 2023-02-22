@@ -40,7 +40,7 @@ namespace MindSculptor.Tools.Applications.DataContextGenerator.FileGenerators.Re
             private class RecordClassDeclaration : ClassDeclaration
             {
                 private RecordClassDeclaration(RecordDefinition recordDefinition)
-                    : base(recordDefinition.RecordName, $"DataContextRecord<{recordDefinition.RecordName}>", MemberAccessModifiers.Public)
+                    : base(recordDefinition.RecordName, $"DatabaseRecord<{recordDefinition.RecordName}>", MemberAccessModifiers.Public)
                 {
                     foreach (var fieldDefinition in recordDefinition.Fields)
                         if (!fieldDefinition.IsReadOnly)

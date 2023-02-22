@@ -63,7 +63,7 @@ namespace MindSculptor.Tools.Applications.DataContextGenerator.FileGenerators.Ta
                     SyntaxFactory.Parameter(SyntaxFactory.Identifier("command")),
                     SyntaxFactory.Parameter(SyntaxFactory.Identifier("cancellationToken")));
 
-            var executeInvocationExpression = SyntaxFactory.InvocationExpression(SyntaxFactory.IdentifierName("DataContext.ExecuteAsync"))
+            var executeInvocationExpression = SyntaxFactory.InvocationExpression(SyntaxFactory.IdentifierName("DatabaseContext.ExecuteAsync"))
                 .AddArgumentListArguments(
                     SyntaxFactory.Argument(lambdaExpression),
                     SyntaxFactory.Argument(SyntaxFactory.IdentifierName(nameof(CancellationToken).FormatAsVariableName())));

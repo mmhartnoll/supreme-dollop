@@ -18,7 +18,7 @@ namespace MindSculptor.App.AppDataContext.Schemas.Mtga.Tables.Records
         public int PickNumber { get; }
         public int Ordinal { get; }
 
-        private DraftPickOptionRecord(DatabaseContext dataContext, DraftPickOptionsTable draftPickOptionsTable, Guid id, Guid eventId, Guid eventEntryId, Guid digitalCardId, int packNumber, int pickNumber, int ordinal) : base(dataContext, draftPickOptionsTable)
+        private DraftPickOptionRecord(DatabaseContext databaseContext, DraftPickOptionsTable draftPickOptionsTable, Guid id, Guid eventId, Guid eventEntryId, Guid digitalCardId, int packNumber, int pickNumber, int ordinal) : base(databaseContext, draftPickOptionsTable)
         {
             Id = id;
             EventId = eventId;
@@ -29,9 +29,9 @@ namespace MindSculptor.App.AppDataContext.Schemas.Mtga.Tables.Records
             Ordinal = ordinal;
         }
 
-        internal static DraftPickOptionRecord Create(DatabaseContext dataContext, DraftPickOptionsTable draftPickOptionsTable, Guid id, Guid eventId, Guid eventEntryId, Guid digitalCardId, int packNumber, int pickNumber, int ordinal)
+        internal static DraftPickOptionRecord Create(DatabaseContext databaseContext, DraftPickOptionsTable draftPickOptionsTable, Guid id, Guid eventId, Guid eventEntryId, Guid digitalCardId, int packNumber, int pickNumber, int ordinal)
         {
-            return new DraftPickOptionRecord(dataContext, draftPickOptionsTable, id, eventId, eventEntryId, digitalCardId, packNumber, pickNumber, ordinal);
+            return new DraftPickOptionRecord(databaseContext, draftPickOptionsTable, id, eventId, eventEntryId, digitalCardId, packNumber, pickNumber, ordinal);
         }
 
         protected override void UpdateRecord(DbCommand command)

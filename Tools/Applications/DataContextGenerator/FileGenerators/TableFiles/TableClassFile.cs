@@ -54,7 +54,7 @@ namespace MindSculptor.Tools.Applications.DataContextGenerator.FileGenerators.Ta
             private class TableClassDeclaration : ClassDeclaration
             {
                 private TableClassDeclaration(RecordDefinition recordDefinition) 
-                    : base($"{recordDefinition.TableName}Table", $"DataContextTable<{recordDefinition.RecordName}, {recordDefinition.RecordName}Expression>", MemberAccessModifiers.Public)
+                    : base($"{recordDefinition.TableName}Table", $"DatabaseTable<{recordDefinition.RecordName}, {recordDefinition.RecordName}Expression>", MemberAccessModifiers.Public)
                 {
                     AddConstructor(TableConstructorDeclaration.Create(recordDefinition));
                     AddMethod(CreateTableClassMethodDeclaration.Create(recordDefinition));

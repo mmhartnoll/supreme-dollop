@@ -12,38 +12,38 @@ namespace MindSculptor.App.AppDataContext.Schemas.Cards.Tables
 {
     public class FaceHasCastingCostTable : DatabaseTable<FaceHasCastingCostRecord, FaceHasCastingCostRecordExpression>
     {
-        private FaceHasCastingCostTable(DatabaseContext dataContext) : base(dataContext, "Cards", "FaceHasCastingCost")
+        private FaceHasCastingCostTable(DatabaseContext databaseContext) : base(databaseContext, "Cards", "FaceHasCastingCost")
         {
         }
 
-        internal static FaceHasCastingCostTable Create(DatabaseContext dataContext)
+        internal static FaceHasCastingCostTable Create(DatabaseContext databaseContext)
         {
-            return new FaceHasCastingCostTable(dataContext);
+            return new FaceHasCastingCostTable(databaseContext);
         }
 
         public FaceHasCastingCostRecord NewRecord(Guid faceId, Guid manaSymbolId, int ordinal, int count)
         {
-            return Context.Execute(command => NewRecord(command, faceId, manaSymbolId, ordinal, count));
+            return DatabaseContext.Execute(command => NewRecord(command, faceId, manaSymbolId, ordinal, count));
         }
 
         public async Task<FaceHasCastingCostRecord> NewRecordAsync(Guid faceId, Guid manaSymbolId, int ordinal, int count, CancellationToken cancellationToken = default)
         {
-            return await Context.ExecuteAsync((command, cancellationToken) => NewRecordAsync(command, faceId, manaSymbolId, ordinal, count, cancellationToken), cancellationToken).ConfigureAwait(false);
+            return await DatabaseContext.ExecuteAsync((command, cancellationToken) => NewRecordAsync(command, faceId, manaSymbolId, ordinal, count, cancellationToken), cancellationToken).ConfigureAwait(false);
         }
 
         public FaceHasCastingCostRecord NewRecord(FaceRecord faceRecord, ManaSymbolRecord manaSymbolRecord, int ordinal, int count)
         {
-            return Context.Execute(command => NewRecord(command, faceRecord.Id, manaSymbolRecord.Id, ordinal, count));
+            return DatabaseContext.Execute(command => NewRecord(command, faceRecord.Id, manaSymbolRecord.Id, ordinal, count));
         }
 
         public async Task<FaceHasCastingCostRecord> NewRecordAsync(FaceRecord faceRecord, ManaSymbolRecord manaSymbolRecord, int ordinal, int count, CancellationToken cancellationToken = default)
         {
-            return await Context.ExecuteAsync((command, cancellationToken) => NewRecordAsync(command, faceRecord.Id, manaSymbolRecord.Id, ordinal, count, cancellationToken), cancellationToken).ConfigureAwait(false);
+            return await DatabaseContext.ExecuteAsync((command, cancellationToken) => NewRecordAsync(command, faceRecord.Id, manaSymbolRecord.Id, ordinal, count, cancellationToken), cancellationToken).ConfigureAwait(false);
         }
 
         private FaceHasCastingCostRecord NewRecord(DbCommand command, Guid faceId, Guid manaSymbolId, int ordinal, int count)
         {
-            var newRecord = FaceHasCastingCostRecord.Create(Context, this, faceId, manaSymbolId, ordinal, count);
+            var newRecord = FaceHasCastingCostRecord.Create(DatabaseContext, this, faceId, manaSymbolId, ordinal, count);
             command.CommandText = "INSERT INTO [Cards].[FaceHasCastingCost] ( FaceId, ManaSymbolId, Ordinal, Count ) VALUES ( @FaceId, @ManaSymbolId, @Ordinal, @Count );";
             command.AddParameter("FaceId", newRecord.FaceId);
             command.AddParameter("ManaSymbolId", newRecord.ManaSymbolId);
@@ -56,7 +56,7 @@ namespace MindSculptor.App.AppDataContext.Schemas.Cards.Tables
 
         private async Task<FaceHasCastingCostRecord> NewRecordAsync(DbCommand command, Guid faceId, Guid manaSymbolId, int ordinal, int count, CancellationToken cancellationToken)
         {
-            var newRecord = FaceHasCastingCostRecord.Create(Context, this, faceId, manaSymbolId, ordinal, count);
+            var newRecord = FaceHasCastingCostRecord.Create(DatabaseContext, this, faceId, manaSymbolId, ordinal, count);
             command.CommandText = "INSERT INTO [Cards].[FaceHasCastingCost] ( FaceId, ManaSymbolId, Ordinal, Count ) VALUES ( @FaceId, @ManaSymbolId, @Ordinal, @Count );";
             command.AddParameter("FaceId", newRecord.FaceId);
             command.AddParameter("ManaSymbolId", newRecord.ManaSymbolId);
@@ -73,7 +73,7 @@ namespace MindSculptor.App.AppDataContext.Schemas.Cards.Tables
             var manaSymbolId = (Guid)dbDataReader["ManaSymbolId"];
             var ordinal = Convert.ToInt32(dbDataReader["Ordinal"]);
             var count = Convert.ToInt32(dbDataReader["Count"]);
-            return FaceHasCastingCostRecord.Create(Context, this, faceId, manaSymbolId, ordinal, count);
+            return FaceHasCastingCostRecord.Create(DatabaseContext, this, faceId, manaSymbolId, ordinal, count);
         }
     }
 }

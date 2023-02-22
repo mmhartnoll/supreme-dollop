@@ -16,7 +16,7 @@ namespace MindSculptor.App.AppDataContext.Schemas.Mtga.Tables.Records
         public bool PlayedFirst { get; }
         public bool GameWon { get; }
 
-        private EventMatchGameRecord(DatabaseContext dataContext, EventMatchGamesTable eventMatchGamesTable, Guid id, Guid eventMatchId, int gameNumber, bool playedFirst, bool gameWon) : base(dataContext, eventMatchGamesTable)
+        private EventMatchGameRecord(DatabaseContext databaseContext, EventMatchGamesTable eventMatchGamesTable, Guid id, Guid eventMatchId, int gameNumber, bool playedFirst, bool gameWon) : base(databaseContext, eventMatchGamesTable)
         {
             Id = id;
             EventMatchId = eventMatchId;
@@ -25,9 +25,9 @@ namespace MindSculptor.App.AppDataContext.Schemas.Mtga.Tables.Records
             GameWon = gameWon;
         }
 
-        internal static EventMatchGameRecord Create(DatabaseContext dataContext, EventMatchGamesTable eventMatchGamesTable, Guid id, Guid eventMatchId, int gameNumber, bool playedFirst, bool gameWon)
+        internal static EventMatchGameRecord Create(DatabaseContext databaseContext, EventMatchGamesTable eventMatchGamesTable, Guid id, Guid eventMatchId, int gameNumber, bool playedFirst, bool gameWon)
         {
-            return new EventMatchGameRecord(dataContext, eventMatchGamesTable, id, eventMatchId, gameNumber, playedFirst, gameWon);
+            return new EventMatchGameRecord(databaseContext, eventMatchGamesTable, id, eventMatchId, gameNumber, playedFirst, gameWon);
         }
 
         protected override void UpdateRecord(DbCommand command)

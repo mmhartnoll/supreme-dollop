@@ -35,16 +35,16 @@ namespace MindSculptor.App.AppDataContext.Schemas.Cards.Tables.Records
             }
         }
 
-        private LoyaltyRecord(DatabaseContext dataContext, LoyaltyTable loyaltyTable, Guid faceId, int baseLoyalty, string loyaltyFormat) : base(dataContext, loyaltyTable)
+        private LoyaltyRecord(DatabaseContext databaseContext, LoyaltyTable loyaltyTable, Guid faceId, int baseLoyalty, string loyaltyFormat) : base(databaseContext, loyaltyTable)
         {
             FaceId = faceId;
             _baseLoyalty = baseLoyalty;
             _loyaltyFormat = loyaltyFormat;
         }
 
-        internal static LoyaltyRecord Create(DatabaseContext dataContext, LoyaltyTable loyaltyTable, Guid faceId, int baseLoyalty, string loyaltyFormat)
+        internal static LoyaltyRecord Create(DatabaseContext databaseContext, LoyaltyTable loyaltyTable, Guid faceId, int baseLoyalty, string loyaltyFormat)
         {
-            return new LoyaltyRecord(dataContext, loyaltyTable, faceId, baseLoyalty, loyaltyFormat);
+            return new LoyaltyRecord(databaseContext, loyaltyTable, faceId, baseLoyalty, loyaltyFormat);
         }
 
         protected override void UpdateRecord(DbCommand command)

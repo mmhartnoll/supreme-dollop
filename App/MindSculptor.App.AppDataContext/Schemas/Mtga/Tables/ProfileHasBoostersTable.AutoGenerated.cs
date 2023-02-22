@@ -12,38 +12,38 @@ namespace MindSculptor.App.AppDataContext.Schemas.Mtga.Tables
 {
     public class ProfileHasBoostersTable : DatabaseTable<ProfileHasBoostersRecord, ProfileHasBoostersRecordExpression>
     {
-        private ProfileHasBoostersTable(DatabaseContext dataContext) : base(dataContext, "Mtga", "ProfileHasBoosters")
+        private ProfileHasBoostersTable(DatabaseContext databaseContext) : base(databaseContext, "Mtga", "ProfileHasBoosters")
         {
         }
 
-        internal static ProfileHasBoostersTable Create(DatabaseContext dataContext)
+        internal static ProfileHasBoostersTable Create(DatabaseContext databaseContext)
         {
-            return new ProfileHasBoostersTable(dataContext);
+            return new ProfileHasBoostersTable(databaseContext);
         }
 
         public ProfileHasBoostersRecord NewRecord(Guid profileId, Guid boosterId, int count)
         {
-            return Context.Execute(command => NewRecord(command, profileId, boosterId, count));
+            return DatabaseContext.Execute(command => NewRecord(command, profileId, boosterId, count));
         }
 
         public async Task<ProfileHasBoostersRecord> NewRecordAsync(Guid profileId, Guid boosterId, int count, CancellationToken cancellationToken = default)
         {
-            return await Context.ExecuteAsync((command, cancellationToken) => NewRecordAsync(command, profileId, boosterId, count, cancellationToken), cancellationToken).ConfigureAwait(false);
+            return await DatabaseContext.ExecuteAsync((command, cancellationToken) => NewRecordAsync(command, profileId, boosterId, count, cancellationToken), cancellationToken).ConfigureAwait(false);
         }
 
         public ProfileHasBoostersRecord NewRecord(ProfileRecord profileRecord, BoosterRecord boosterRecord, int count)
         {
-            return Context.Execute(command => NewRecord(command, profileRecord.Id, boosterRecord.SetId, count));
+            return DatabaseContext.Execute(command => NewRecord(command, profileRecord.Id, boosterRecord.SetId, count));
         }
 
         public async Task<ProfileHasBoostersRecord> NewRecordAsync(ProfileRecord profileRecord, BoosterRecord boosterRecord, int count, CancellationToken cancellationToken = default)
         {
-            return await Context.ExecuteAsync((command, cancellationToken) => NewRecordAsync(command, profileRecord.Id, boosterRecord.SetId, count, cancellationToken), cancellationToken).ConfigureAwait(false);
+            return await DatabaseContext.ExecuteAsync((command, cancellationToken) => NewRecordAsync(command, profileRecord.Id, boosterRecord.SetId, count, cancellationToken), cancellationToken).ConfigureAwait(false);
         }
 
         private ProfileHasBoostersRecord NewRecord(DbCommand command, Guid profileId, Guid boosterId, int count)
         {
-            var newRecord = ProfileHasBoostersRecord.Create(Context, this, profileId, boosterId, count);
+            var newRecord = ProfileHasBoostersRecord.Create(DatabaseContext, this, profileId, boosterId, count);
             command.CommandText = "INSERT INTO [Mtga].[ProfileHasBoosters] ( ProfileId, BoosterId, Count ) VALUES ( @ProfileId, @BoosterId, @Count );";
             command.AddParameter("ProfileId", newRecord.ProfileId);
             command.AddParameter("BoosterId", newRecord.BoosterId);
@@ -55,7 +55,7 @@ namespace MindSculptor.App.AppDataContext.Schemas.Mtga.Tables
 
         private async Task<ProfileHasBoostersRecord> NewRecordAsync(DbCommand command, Guid profileId, Guid boosterId, int count, CancellationToken cancellationToken)
         {
-            var newRecord = ProfileHasBoostersRecord.Create(Context, this, profileId, boosterId, count);
+            var newRecord = ProfileHasBoostersRecord.Create(DatabaseContext, this, profileId, boosterId, count);
             command.CommandText = "INSERT INTO [Mtga].[ProfileHasBoosters] ( ProfileId, BoosterId, Count ) VALUES ( @ProfileId, @BoosterId, @Count );";
             command.AddParameter("ProfileId", newRecord.ProfileId);
             command.AddParameter("BoosterId", newRecord.BoosterId);
@@ -70,7 +70,7 @@ namespace MindSculptor.App.AppDataContext.Schemas.Mtga.Tables
             var profileId = (Guid)dbDataReader["ProfileId"];
             var boosterId = (Guid)dbDataReader["BoosterId"];
             var count = Convert.ToInt32(dbDataReader["Count"]);
-            return ProfileHasBoostersRecord.Create(Context, this, profileId, boosterId, count);
+            return ProfileHasBoostersRecord.Create(DatabaseContext, this, profileId, boosterId, count);
         }
     }
 }

@@ -24,15 +24,15 @@ namespace MindSculptor.App.AppDataContext.Schemas.Cards.Tables.Records
             }
         }
 
-        private OracleTextRecord(DatabaseContext dataContext, OracleTextTable oracleTextTable, Guid faceId, string value) : base(dataContext, oracleTextTable)
+        private OracleTextRecord(DatabaseContext databaseContext, OracleTextTable oracleTextTable, Guid faceId, string value) : base(databaseContext, oracleTextTable)
         {
             FaceId = faceId;
             _value = value;
         }
 
-        internal static OracleTextRecord Create(DatabaseContext dataContext, OracleTextTable oracleTextTable, Guid faceId, string value)
+        internal static OracleTextRecord Create(DatabaseContext databaseContext, OracleTextTable oracleTextTable, Guid faceId, string value)
         {
-            return new OracleTextRecord(dataContext, oracleTextTable, faceId, value);
+            return new OracleTextRecord(databaseContext, oracleTextTable, faceId, value);
         }
 
         protected override void UpdateRecord(DbCommand command)

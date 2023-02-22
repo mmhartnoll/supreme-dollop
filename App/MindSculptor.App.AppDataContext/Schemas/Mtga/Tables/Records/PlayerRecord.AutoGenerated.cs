@@ -15,7 +15,7 @@ namespace MindSculptor.App.AppDataContext.Schemas.Mtga.Tables.Records
         public string Name { get; }
         public int NameId { get; }
 
-        private PlayerRecord(DatabaseContext dataContext, PlayersTable playersTable, Guid id, string mtgaUserId, string name, int nameId) : base(dataContext, playersTable)
+        private PlayerRecord(DatabaseContext databaseContext, PlayersTable playersTable, Guid id, string mtgaUserId, string name, int nameId) : base(databaseContext, playersTable)
         {
             Id = id;
             MtgaUserId = mtgaUserId;
@@ -23,9 +23,9 @@ namespace MindSculptor.App.AppDataContext.Schemas.Mtga.Tables.Records
             NameId = nameId;
         }
 
-        internal static PlayerRecord Create(DatabaseContext dataContext, PlayersTable playersTable, Guid id, string mtgaUserId, string name, int nameId)
+        internal static PlayerRecord Create(DatabaseContext databaseContext, PlayersTable playersTable, Guid id, string mtgaUserId, string name, int nameId)
         {
-            return new PlayerRecord(dataContext, playersTable, id, mtgaUserId, name, nameId);
+            return new PlayerRecord(databaseContext, playersTable, id, mtgaUserId, name, nameId);
         }
 
         protected override void UpdateRecord(DbCommand command)

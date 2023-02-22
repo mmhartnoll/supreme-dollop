@@ -12,28 +12,28 @@ namespace MindSculptor.App.AppDataContext.Schemas.Cards.Tables
 {
     public class RarityTypesTable : DatabaseTable<RarityTypeRecord, RarityTypeRecordExpression>
     {
-        private RarityTypesTable(DatabaseContext dataContext) : base(dataContext, "Cards", "RarityTypes")
+        private RarityTypesTable(DatabaseContext databaseContext) : base(databaseContext, "Cards", "RarityTypes")
         {
         }
 
-        internal static RarityTypesTable Create(DatabaseContext dataContext)
+        internal static RarityTypesTable Create(DatabaseContext databaseContext)
         {
-            return new RarityTypesTable(dataContext);
+            return new RarityTypesTable(databaseContext);
         }
 
         public RarityTypeRecord NewRecord(string value)
         {
-            return Context.Execute(command => NewRecord(command, Guid.NewGuid(), value));
+            return DatabaseContext.Execute(command => NewRecord(command, Guid.NewGuid(), value));
         }
 
         public async Task<RarityTypeRecord> NewRecordAsync(string value, CancellationToken cancellationToken = default)
         {
-            return await Context.ExecuteAsync((command, cancellationToken) => NewRecordAsync(command, Guid.NewGuid(), value, cancellationToken), cancellationToken).ConfigureAwait(false);
+            return await DatabaseContext.ExecuteAsync((command, cancellationToken) => NewRecordAsync(command, Guid.NewGuid(), value, cancellationToken), cancellationToken).ConfigureAwait(false);
         }
 
         private RarityTypeRecord NewRecord(DbCommand command, Guid id, string value)
         {
-            var newRecord = RarityTypeRecord.Create(Context, this, id, value);
+            var newRecord = RarityTypeRecord.Create(DatabaseContext, this, id, value);
             command.CommandText = "INSERT INTO [Cards].[RarityTypes] ( Id, Value ) VALUES ( @Id, @Value );";
             command.AddParameter("Id", newRecord.Id);
             command.AddParameter("Value", newRecord.Value);
@@ -44,7 +44,7 @@ namespace MindSculptor.App.AppDataContext.Schemas.Cards.Tables
 
         private async Task<RarityTypeRecord> NewRecordAsync(DbCommand command, Guid id, string value, CancellationToken cancellationToken)
         {
-            var newRecord = RarityTypeRecord.Create(Context, this, id, value);
+            var newRecord = RarityTypeRecord.Create(DatabaseContext, this, id, value);
             command.CommandText = "INSERT INTO [Cards].[RarityTypes] ( Id, Value ) VALUES ( @Id, @Value );";
             command.AddParameter("Id", newRecord.Id);
             command.AddParameter("Value", newRecord.Value);
@@ -57,7 +57,7 @@ namespace MindSculptor.App.AppDataContext.Schemas.Cards.Tables
         {
             var id = (Guid)dbDataReader["Id"];
             var value = (string)dbDataReader["Value"];
-            return RarityTypeRecord.Create(Context, this, id, value);
+            return RarityTypeRecord.Create(DatabaseContext, this, id, value);
         }
     }
 }

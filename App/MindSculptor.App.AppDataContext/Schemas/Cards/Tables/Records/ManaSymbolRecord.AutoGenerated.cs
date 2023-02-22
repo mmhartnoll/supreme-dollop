@@ -21,7 +21,7 @@ namespace MindSculptor.App.AppDataContext.Schemas.Cards.Tables.Records
         public bool HasGreenIdentity { get; }
         public bool HasColorlessIdentity { get; }
 
-        private ManaSymbolRecord(DatabaseContext dataContext, ManaSymbolsTable manaSymbolsTable, Guid id, string type, string code, int convertedManaCost, bool hasWhiteIdentity, bool hasBlueIdentity, bool hasBlackIdentity, bool hasRedIdentity, bool hasGreenIdentity, bool hasColorlessIdentity) : base(dataContext, manaSymbolsTable)
+        private ManaSymbolRecord(DatabaseContext databaseContext, ManaSymbolsTable manaSymbolsTable, Guid id, string type, string code, int convertedManaCost, bool hasWhiteIdentity, bool hasBlueIdentity, bool hasBlackIdentity, bool hasRedIdentity, bool hasGreenIdentity, bool hasColorlessIdentity) : base(databaseContext, manaSymbolsTable)
         {
             Id = id;
             Type = type;
@@ -35,9 +35,9 @@ namespace MindSculptor.App.AppDataContext.Schemas.Cards.Tables.Records
             HasColorlessIdentity = hasColorlessIdentity;
         }
 
-        internal static ManaSymbolRecord Create(DatabaseContext dataContext, ManaSymbolsTable manaSymbolsTable, Guid id, string type, string code, int convertedManaCost, bool hasWhiteIdentity, bool hasBlueIdentity, bool hasBlackIdentity, bool hasRedIdentity, bool hasGreenIdentity, bool hasColorlessIdentity)
+        internal static ManaSymbolRecord Create(DatabaseContext databaseContext, ManaSymbolsTable manaSymbolsTable, Guid id, string type, string code, int convertedManaCost, bool hasWhiteIdentity, bool hasBlueIdentity, bool hasBlackIdentity, bool hasRedIdentity, bool hasGreenIdentity, bool hasColorlessIdentity)
         {
-            return new ManaSymbolRecord(dataContext, manaSymbolsTable, id, type, code, convertedManaCost, hasWhiteIdentity, hasBlueIdentity, hasBlackIdentity, hasRedIdentity, hasGreenIdentity, hasColorlessIdentity);
+            return new ManaSymbolRecord(databaseContext, manaSymbolsTable, id, type, code, convertedManaCost, hasWhiteIdentity, hasBlueIdentity, hasBlackIdentity, hasRedIdentity, hasGreenIdentity, hasColorlessIdentity);
         }
 
         protected override void UpdateRecord(DbCommand command)

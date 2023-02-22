@@ -13,38 +13,38 @@ namespace MindSculptor.App.AppDataContext.Schemas.Mtga.Tables
 {
     public class BoostersTable : DatabaseTable<BoosterRecord, BoosterRecordExpression>
     {
-        private BoostersTable(DatabaseContext dataContext) : base(dataContext, "Mtga", "Boosters")
+        private BoostersTable(DatabaseContext databaseContext) : base(databaseContext, "Mtga", "Boosters")
         {
         }
 
-        internal static BoostersTable Create(DatabaseContext dataContext)
+        internal static BoostersTable Create(DatabaseContext databaseContext)
         {
-            return new BoostersTable(dataContext);
+            return new BoostersTable(databaseContext);
         }
 
         public BoosterRecord NewRecord(Guid setId, int mtgaBoosterId)
         {
-            return Context.Execute(command => NewRecord(command, setId, mtgaBoosterId));
+            return DatabaseContext.Execute(command => NewRecord(command, setId, mtgaBoosterId));
         }
 
         public async Task<BoosterRecord> NewRecordAsync(Guid setId, int mtgaBoosterId, CancellationToken cancellationToken = default)
         {
-            return await Context.ExecuteAsync((command, cancellationToken) => NewRecordAsync(command, setId, mtgaBoosterId, cancellationToken), cancellationToken).ConfigureAwait(false);
+            return await DatabaseContext.ExecuteAsync((command, cancellationToken) => NewRecordAsync(command, setId, mtgaBoosterId, cancellationToken), cancellationToken).ConfigureAwait(false);
         }
 
         public BoosterRecord NewRecord(SetRecord setRecord, int mtgaBoosterId)
         {
-            return Context.Execute(command => NewRecord(command, setRecord.Id, mtgaBoosterId));
+            return DatabaseContext.Execute(command => NewRecord(command, setRecord.Id, mtgaBoosterId));
         }
 
         public async Task<BoosterRecord> NewRecordAsync(SetRecord setRecord, int mtgaBoosterId, CancellationToken cancellationToken = default)
         {
-            return await Context.ExecuteAsync((command, cancellationToken) => NewRecordAsync(command, setRecord.Id, mtgaBoosterId, cancellationToken), cancellationToken).ConfigureAwait(false);
+            return await DatabaseContext.ExecuteAsync((command, cancellationToken) => NewRecordAsync(command, setRecord.Id, mtgaBoosterId, cancellationToken), cancellationToken).ConfigureAwait(false);
         }
 
         private BoosterRecord NewRecord(DbCommand command, Guid setId, int mtgaBoosterId)
         {
-            var newRecord = BoosterRecord.Create(Context, this, setId, mtgaBoosterId);
+            var newRecord = BoosterRecord.Create(DatabaseContext, this, setId, mtgaBoosterId);
             command.CommandText = "INSERT INTO [Mtga].[Boosters] ( SetId, MtgaBoosterId ) VALUES ( @SetId, @MtgaBoosterId );";
             command.AddParameter("SetId", newRecord.SetId);
             command.AddParameter("MtgaBoosterId", newRecord.MtgaBoosterId);
@@ -55,7 +55,7 @@ namespace MindSculptor.App.AppDataContext.Schemas.Mtga.Tables
 
         private async Task<BoosterRecord> NewRecordAsync(DbCommand command, Guid setId, int mtgaBoosterId, CancellationToken cancellationToken)
         {
-            var newRecord = BoosterRecord.Create(Context, this, setId, mtgaBoosterId);
+            var newRecord = BoosterRecord.Create(DatabaseContext, this, setId, mtgaBoosterId);
             command.CommandText = "INSERT INTO [Mtga].[Boosters] ( SetId, MtgaBoosterId ) VALUES ( @SetId, @MtgaBoosterId );";
             command.AddParameter("SetId", newRecord.SetId);
             command.AddParameter("MtgaBoosterId", newRecord.MtgaBoosterId);
@@ -68,7 +68,7 @@ namespace MindSculptor.App.AppDataContext.Schemas.Mtga.Tables
         {
             var setId = (Guid)dbDataReader["SetId"];
             var mtgaBoosterId = Convert.ToInt32(dbDataReader["MtgaBoosterId"]);
-            return BoosterRecord.Create(Context, this, setId, mtgaBoosterId);
+            return BoosterRecord.Create(DatabaseContext, this, setId, mtgaBoosterId);
         }
     }
 }

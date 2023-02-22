@@ -1,4 +1,5 @@
-﻿using MindSculptor.DataAccess.Modelled.Schemas;
+﻿using MindSculptor.DataAccess.Context;
+using MindSculptor.DataAccess.Modelled.Schemas;
 using MindSculptor.Tools.Applications.DataContextGenerator.Extensions;
 using MindSculptor.Tools.Applications.DataContextGenerator.FileGenerators.SchemaFiles.Constructors;
 using MindSculptor.Tools.Applications.DataContextGenerator.FileGenerators.SchemaFiles.Methods;
@@ -36,7 +37,7 @@ namespace MindSculptor.Tools.Applications.DataContextGenerator.FileGenerators.Sc
             private class SchemaClassDeclaration : ClassDeclaration
             {
                 private SchemaClassDeclaration(Schema schemaDefinition)
-                    : base($"{schemaDefinition.Name}Schema", "DataContextSchema", MemberAccessModifiers.Public)
+                    : base($"{schemaDefinition.Name}Schema", nameof(DatabaseSchema), MemberAccessModifiers.Public)
                 {
                     foreach (var recordDefinition in schemaDefinition.Records)
                         AddField(FieldDeclaration.Create(

@@ -12,14 +12,14 @@ namespace MindSculptor.App.AppDataContext.Schemas.Mtga.Tables.Records
     {
         public Guid Id { get; }
 
-        private ProfileRecord(DatabaseContext dataContext, ProfilesTable profilesTable, Guid id) : base(dataContext, profilesTable)
+        private ProfileRecord(DatabaseContext databaseContext, ProfilesTable profilesTable, Guid id) : base(databaseContext, profilesTable)
         {
             Id = id;
         }
 
-        internal static ProfileRecord Create(DatabaseContext dataContext, ProfilesTable profilesTable, Guid id)
+        internal static ProfileRecord Create(DatabaseContext databaseContext, ProfilesTable profilesTable, Guid id)
         {
-            return new ProfileRecord(dataContext, profilesTable, id);
+            return new ProfileRecord(databaseContext, profilesTable, id);
         }
 
         protected override void UpdateRecord(DbCommand command)

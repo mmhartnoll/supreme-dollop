@@ -12,38 +12,38 @@ namespace MindSculptor.App.AppDataContext.Schemas.Cards.Tables
 {
     public class SetInclusionsTable : DatabaseTable<SetInclusionRecord, SetInclusionRecordExpression>
     {
-        private SetInclusionsTable(DatabaseContext dataContext) : base(dataContext, "Cards", "SetInclusions")
+        private SetInclusionsTable(DatabaseContext databaseContext) : base(databaseContext, "Cards", "SetInclusions")
         {
         }
 
-        internal static SetInclusionsTable Create(DatabaseContext dataContext)
+        internal static SetInclusionsTable Create(DatabaseContext databaseContext)
         {
-            return new SetInclusionsTable(dataContext);
+            return new SetInclusionsTable(databaseContext);
         }
 
         public SetInclusionRecord NewRecord(Guid setId, Guid subsetTypeId, Guid baseId, Guid rarityTypeId, int logicalOrdinal, int? collectorsNumber)
         {
-            return Context.Execute(command => NewRecord(command, Guid.NewGuid(), setId, subsetTypeId, baseId, rarityTypeId, logicalOrdinal, collectorsNumber));
+            return DatabaseContext.Execute(command => NewRecord(command, Guid.NewGuid(), setId, subsetTypeId, baseId, rarityTypeId, logicalOrdinal, collectorsNumber));
         }
 
         public async Task<SetInclusionRecord> NewRecordAsync(Guid setId, Guid subsetTypeId, Guid baseId, Guid rarityTypeId, int logicalOrdinal, int? collectorsNumber, CancellationToken cancellationToken = default)
         {
-            return await Context.ExecuteAsync((command, cancellationToken) => NewRecordAsync(command, Guid.NewGuid(), setId, subsetTypeId, baseId, rarityTypeId, logicalOrdinal, collectorsNumber, cancellationToken), cancellationToken).ConfigureAwait(false);
+            return await DatabaseContext.ExecuteAsync((command, cancellationToken) => NewRecordAsync(command, Guid.NewGuid(), setId, subsetTypeId, baseId, rarityTypeId, logicalOrdinal, collectorsNumber, cancellationToken), cancellationToken).ConfigureAwait(false);
         }
 
         public SetInclusionRecord NewRecord(SetRecord setRecord, SubsetTypeRecord subsetTypeRecord, BaseRecord baseRecord, RarityTypeRecord rarityTypeRecord, int logicalOrdinal, int? collectorsNumber)
         {
-            return Context.Execute(command => NewRecord(command, Guid.NewGuid(), setRecord.Id, subsetTypeRecord.Id, baseRecord.Id, rarityTypeRecord.Id, logicalOrdinal, collectorsNumber));
+            return DatabaseContext.Execute(command => NewRecord(command, Guid.NewGuid(), setRecord.Id, subsetTypeRecord.Id, baseRecord.Id, rarityTypeRecord.Id, logicalOrdinal, collectorsNumber));
         }
 
         public async Task<SetInclusionRecord> NewRecordAsync(SetRecord setRecord, SubsetTypeRecord subsetTypeRecord, BaseRecord baseRecord, RarityTypeRecord rarityTypeRecord, int logicalOrdinal, int? collectorsNumber, CancellationToken cancellationToken = default)
         {
-            return await Context.ExecuteAsync((command, cancellationToken) => NewRecordAsync(command, Guid.NewGuid(), setRecord.Id, subsetTypeRecord.Id, baseRecord.Id, rarityTypeRecord.Id, logicalOrdinal, collectorsNumber, cancellationToken), cancellationToken).ConfigureAwait(false);
+            return await DatabaseContext.ExecuteAsync((command, cancellationToken) => NewRecordAsync(command, Guid.NewGuid(), setRecord.Id, subsetTypeRecord.Id, baseRecord.Id, rarityTypeRecord.Id, logicalOrdinal, collectorsNumber, cancellationToken), cancellationToken).ConfigureAwait(false);
         }
 
         private SetInclusionRecord NewRecord(DbCommand command, Guid id, Guid setId, Guid subsetTypeId, Guid baseId, Guid rarityTypeId, int logicalOrdinal, int? collectorsNumber)
         {
-            var newRecord = SetInclusionRecord.Create(Context, this, id, setId, subsetTypeId, baseId, rarityTypeId, logicalOrdinal, collectorsNumber);
+            var newRecord = SetInclusionRecord.Create(DatabaseContext, this, id, setId, subsetTypeId, baseId, rarityTypeId, logicalOrdinal, collectorsNumber);
             command.CommandText = "INSERT INTO [Cards].[SetInclusions] ( Id, SetId, SubsetTypeId, BaseId, RarityTypeId, LogicalOrdinal, CollectorsNumber ) VALUES ( @Id, @SetId, @SubsetTypeId, @BaseId, @RarityTypeId, @LogicalOrdinal, @CollectorsNumber );";
             command.AddParameter("Id", newRecord.Id);
             command.AddParameter("SetId", newRecord.SetId);
@@ -59,7 +59,7 @@ namespace MindSculptor.App.AppDataContext.Schemas.Cards.Tables
 
         private async Task<SetInclusionRecord> NewRecordAsync(DbCommand command, Guid id, Guid setId, Guid subsetTypeId, Guid baseId, Guid rarityTypeId, int logicalOrdinal, int? collectorsNumber, CancellationToken cancellationToken)
         {
-            var newRecord = SetInclusionRecord.Create(Context, this, id, setId, subsetTypeId, baseId, rarityTypeId, logicalOrdinal, collectorsNumber);
+            var newRecord = SetInclusionRecord.Create(DatabaseContext, this, id, setId, subsetTypeId, baseId, rarityTypeId, logicalOrdinal, collectorsNumber);
             command.CommandText = "INSERT INTO [Cards].[SetInclusions] ( Id, SetId, SubsetTypeId, BaseId, RarityTypeId, LogicalOrdinal, CollectorsNumber ) VALUES ( @Id, @SetId, @SubsetTypeId, @BaseId, @RarityTypeId, @LogicalOrdinal, @CollectorsNumber );";
             command.AddParameter("Id", newRecord.Id);
             command.AddParameter("SetId", newRecord.SetId);
@@ -82,7 +82,7 @@ namespace MindSculptor.App.AppDataContext.Schemas.Cards.Tables
             var rarityTypeId = (Guid)dbDataReader["RarityTypeId"];
             var logicalOrdinal = Convert.ToInt32(dbDataReader["LogicalOrdinal"]);
             var collectorsNumber = dbDataReader["CollectorsNumber"] == DBNull.Value ? null : (int?)Convert.ToInt32(dbDataReader["CollectorsNumber"]);
-            return SetInclusionRecord.Create(Context, this, id, setId, subsetTypeId, baseId, rarityTypeId, logicalOrdinal, collectorsNumber);
+            return SetInclusionRecord.Create(DatabaseContext, this, id, setId, subsetTypeId, baseId, rarityTypeId, logicalOrdinal, collectorsNumber);
         }
     }
 }

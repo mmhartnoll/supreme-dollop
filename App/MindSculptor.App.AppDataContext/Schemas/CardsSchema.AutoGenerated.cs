@@ -76,36 +76,36 @@ namespace MindSculptor.App.AppDataContext.Schemas
 
         public SuperTypesTable SuperTypes => superTypesTableLoader.Value;
 
-        private CardsSchema(DatabaseContext dataContext) : base(dataContext)
+        private CardsSchema(DatabaseContext databaseContext) : base(databaseContext)
         {
-            artistsTableLoader = new Lazy<ArtistsTable>(() => ArtistsTable.Create(Context));
-            basePrintingsTableLoader = new Lazy<BasePrintingsTable>(() => BasePrintingsTable.Create(Context));
-            basesTableLoader = new Lazy<BasesTable>(() => BasesTable.Create(Context));
-            cardTypesTableLoader = new Lazy<CardTypesTable>(() => CardTypesTable.Create(Context));
-            faceHasCastingCostTableLoader = new Lazy<FaceHasCastingCostTable>(() => FaceHasCastingCostTable.Create(Context));
-            faceHasMainTypesTableLoader = new Lazy<FaceHasMainTypesTable>(() => FaceHasMainTypesTable.Create(Context));
-            faceHasSubTypesTableLoader = new Lazy<FaceHasSubTypesTable>(() => FaceHasSubTypesTable.Create(Context));
-            faceHasSuperTypesTableLoader = new Lazy<FaceHasSuperTypesTable>(() => FaceHasSuperTypesTable.Create(Context));
-            facePrintingsTableLoader = new Lazy<FacePrintingsTable>(() => FacePrintingsTable.Create(Context));
-            facesTableLoader = new Lazy<FacesTable>(() => FacesTable.Create(Context));
-            flavorTextTableLoader = new Lazy<FlavorTextTable>(() => FlavorTextTable.Create(Context));
-            loyaltyTableLoader = new Lazy<LoyaltyTable>(() => LoyaltyTable.Create(Context));
-            mainTypesTableLoader = new Lazy<MainTypesTable>(() => MainTypesTable.Create(Context));
-            manaSymbolsTableLoader = new Lazy<ManaSymbolsTable>(() => ManaSymbolsTable.Create(Context));
-            oracleTextTableLoader = new Lazy<OracleTextTable>(() => OracleTextTable.Create(Context));
-            powerToughnessTableLoader = new Lazy<PowerToughnessTable>(() => PowerToughnessTable.Create(Context));
-            printingTypesTableLoader = new Lazy<PrintingTypesTable>(() => PrintingTypesTable.Create(Context));
-            rarityTypesTableLoader = new Lazy<RarityTypesTable>(() => RarityTypesTable.Create(Context));
-            setInclusionsTableLoader = new Lazy<SetInclusionsTable>(() => SetInclusionsTable.Create(Context));
-            setsTableLoader = new Lazy<SetsTable>(() => SetsTable.Create(Context));
-            subsetTypesTableLoader = new Lazy<SubsetTypesTable>(() => SubsetTypesTable.Create(Context));
-            subTypesTableLoader = new Lazy<SubTypesTable>(() => SubTypesTable.Create(Context));
-            superTypesTableLoader = new Lazy<SuperTypesTable>(() => SuperTypesTable.Create(Context));
+            artistsTableLoader = new Lazy<ArtistsTable>(() => ArtistsTable.Create(databaseContext));
+            basePrintingsTableLoader = new Lazy<BasePrintingsTable>(() => BasePrintingsTable.Create(databaseContext));
+            basesTableLoader = new Lazy<BasesTable>(() => BasesTable.Create(databaseContext));
+            cardTypesTableLoader = new Lazy<CardTypesTable>(() => CardTypesTable.Create(databaseContext));
+            faceHasCastingCostTableLoader = new Lazy<FaceHasCastingCostTable>(() => FaceHasCastingCostTable.Create(databaseContext));
+            faceHasMainTypesTableLoader = new Lazy<FaceHasMainTypesTable>(() => FaceHasMainTypesTable.Create(databaseContext));
+            faceHasSubTypesTableLoader = new Lazy<FaceHasSubTypesTable>(() => FaceHasSubTypesTable.Create(databaseContext));
+            faceHasSuperTypesTableLoader = new Lazy<FaceHasSuperTypesTable>(() => FaceHasSuperTypesTable.Create(databaseContext));
+            facePrintingsTableLoader = new Lazy<FacePrintingsTable>(() => FacePrintingsTable.Create(databaseContext));
+            facesTableLoader = new Lazy<FacesTable>(() => FacesTable.Create(databaseContext));
+            flavorTextTableLoader = new Lazy<FlavorTextTable>(() => FlavorTextTable.Create(databaseContext));
+            loyaltyTableLoader = new Lazy<LoyaltyTable>(() => LoyaltyTable.Create(databaseContext));
+            mainTypesTableLoader = new Lazy<MainTypesTable>(() => MainTypesTable.Create(databaseContext));
+            manaSymbolsTableLoader = new Lazy<ManaSymbolsTable>(() => ManaSymbolsTable.Create(databaseContext));
+            oracleTextTableLoader = new Lazy<OracleTextTable>(() => OracleTextTable.Create(databaseContext));
+            powerToughnessTableLoader = new Lazy<PowerToughnessTable>(() => PowerToughnessTable.Create(databaseContext));
+            printingTypesTableLoader = new Lazy<PrintingTypesTable>(() => PrintingTypesTable.Create(databaseContext));
+            rarityTypesTableLoader = new Lazy<RarityTypesTable>(() => RarityTypesTable.Create(databaseContext));
+            setInclusionsTableLoader = new Lazy<SetInclusionsTable>(() => SetInclusionsTable.Create(databaseContext));
+            setsTableLoader = new Lazy<SetsTable>(() => SetsTable.Create(databaseContext));
+            subsetTypesTableLoader = new Lazy<SubsetTypesTable>(() => SubsetTypesTable.Create(databaseContext));
+            subTypesTableLoader = new Lazy<SubTypesTable>(() => SubTypesTable.Create(databaseContext));
+            superTypesTableLoader = new Lazy<SuperTypesTable>(() => SuperTypesTable.Create(databaseContext));
         }
 
-        internal static CardsSchema Create(DatabaseContext dataContext)
+        internal static CardsSchema Create(DatabaseContext databaseContext)
         {
-            return new CardsSchema(dataContext);
+            return new CardsSchema(databaseContext);
         }
     }
 }

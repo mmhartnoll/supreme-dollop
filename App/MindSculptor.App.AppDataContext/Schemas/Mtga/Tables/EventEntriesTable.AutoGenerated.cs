@@ -12,38 +12,38 @@ namespace MindSculptor.App.AppDataContext.Schemas.Mtga.Tables
 {
     public class EventEntriesTable : DatabaseTable<EventEntryRecord, EventEntryRecordExpression>
     {
-        private EventEntriesTable(DatabaseContext dataContext) : base(dataContext, "Mtga", "EventEntries")
+        private EventEntriesTable(DatabaseContext databaseContext) : base(databaseContext, "Mtga", "EventEntries")
         {
         }
 
-        internal static EventEntriesTable Create(DatabaseContext dataContext)
+        internal static EventEntriesTable Create(DatabaseContext databaseContext)
         {
-            return new EventEntriesTable(dataContext);
+            return new EventEntriesTable(databaseContext);
         }
 
         public EventEntryRecord NewRecord(Guid id, Guid eventId, Guid profileId)
         {
-            return Context.Execute(command => NewRecord(command, id, eventId, profileId));
+            return DatabaseContext.Execute(command => NewRecord(command, id, eventId, profileId));
         }
 
         public async Task<EventEntryRecord> NewRecordAsync(Guid id, Guid eventId, Guid profileId, CancellationToken cancellationToken = default)
         {
-            return await Context.ExecuteAsync((command, cancellationToken) => NewRecordAsync(command, id, eventId, profileId, cancellationToken), cancellationToken).ConfigureAwait(false);
+            return await DatabaseContext.ExecuteAsync((command, cancellationToken) => NewRecordAsync(command, id, eventId, profileId, cancellationToken), cancellationToken).ConfigureAwait(false);
         }
 
         public EventEntryRecord NewRecord(EventRecord eventRecord, ProfileRecord profileRecord, Guid id)
         {
-            return Context.Execute(command => NewRecord(command, id, eventRecord.Id, profileRecord.Id));
+            return DatabaseContext.Execute(command => NewRecord(command, id, eventRecord.Id, profileRecord.Id));
         }
 
         public async Task<EventEntryRecord> NewRecordAsync(EventRecord eventRecord, ProfileRecord profileRecord, Guid id, CancellationToken cancellationToken = default)
         {
-            return await Context.ExecuteAsync((command, cancellationToken) => NewRecordAsync(command, id, eventRecord.Id, profileRecord.Id, cancellationToken), cancellationToken).ConfigureAwait(false);
+            return await DatabaseContext.ExecuteAsync((command, cancellationToken) => NewRecordAsync(command, id, eventRecord.Id, profileRecord.Id, cancellationToken), cancellationToken).ConfigureAwait(false);
         }
 
         private EventEntryRecord NewRecord(DbCommand command, Guid id, Guid eventId, Guid profileId)
         {
-            var newRecord = EventEntryRecord.Create(Context, this, id, eventId, profileId);
+            var newRecord = EventEntryRecord.Create(DatabaseContext, this, id, eventId, profileId);
             command.CommandText = "INSERT INTO [Mtga].[EventEntries] ( Id, EventId, ProfileId ) VALUES ( @Id, @EventId, @ProfileId );";
             command.AddParameter("Id", newRecord.Id);
             command.AddParameter("EventId", newRecord.EventId);
@@ -55,7 +55,7 @@ namespace MindSculptor.App.AppDataContext.Schemas.Mtga.Tables
 
         private async Task<EventEntryRecord> NewRecordAsync(DbCommand command, Guid id, Guid eventId, Guid profileId, CancellationToken cancellationToken)
         {
-            var newRecord = EventEntryRecord.Create(Context, this, id, eventId, profileId);
+            var newRecord = EventEntryRecord.Create(DatabaseContext, this, id, eventId, profileId);
             command.CommandText = "INSERT INTO [Mtga].[EventEntries] ( Id, EventId, ProfileId ) VALUES ( @Id, @EventId, @ProfileId );";
             command.AddParameter("Id", newRecord.Id);
             command.AddParameter("EventId", newRecord.EventId);
@@ -70,7 +70,7 @@ namespace MindSculptor.App.AppDataContext.Schemas.Mtga.Tables
             var id = (Guid)dbDataReader["Id"];
             var eventId = (Guid)dbDataReader["EventId"];
             var profileId = (Guid)dbDataReader["ProfileId"];
-            return EventEntryRecord.Create(Context, this, id, eventId, profileId);
+            return EventEntryRecord.Create(DatabaseContext, this, id, eventId, profileId);
         }
     }
 }

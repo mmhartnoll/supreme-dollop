@@ -29,7 +29,7 @@ namespace MindSculptor.Tools.Applications.DataContextGenerator.FileGenerators.Sc
             foreach (var recordDefinition in schemaDefinition.Records)
             {
                 var invocationExpression = SyntaxFactory.InvocationExpression(SyntaxFactory.IdentifierName($"{recordDefinition.TableName}Table.Create"))
-                    .AddArgumentListArguments(SyntaxFactory.Argument(SyntaxFactory.IdentifierName("DataContext")));
+                    .AddArgumentListArguments(SyntaxFactory.Argument(SyntaxFactory.IdentifierName(nameof(DatabaseContext).FormatAsVariableName())));
                 var anonymousMethodExpression = SyntaxFactory.ParenthesizedLambdaExpression()
                     .WithExpressionBody(invocationExpression);
 

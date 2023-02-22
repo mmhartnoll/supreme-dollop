@@ -36,7 +36,7 @@ namespace MindSculptor.App.AppDataContext.Schemas.Cards.Tables.Records
             }
         }
 
-        private FaceHasCastingCostRecord(DatabaseContext dataContext, FaceHasCastingCostTable faceHasCastingCostTable, Guid faceId, Guid manaSymbolId, int ordinal, int count) : base(dataContext, faceHasCastingCostTable)
+        private FaceHasCastingCostRecord(DatabaseContext databaseContext, FaceHasCastingCostTable faceHasCastingCostTable, Guid faceId, Guid manaSymbolId, int ordinal, int count) : base(databaseContext, faceHasCastingCostTable)
         {
             FaceId = faceId;
             ManaSymbolId = manaSymbolId;
@@ -44,9 +44,9 @@ namespace MindSculptor.App.AppDataContext.Schemas.Cards.Tables.Records
             _count = count;
         }
 
-        internal static FaceHasCastingCostRecord Create(DatabaseContext dataContext, FaceHasCastingCostTable faceHasCastingCostTable, Guid faceId, Guid manaSymbolId, int ordinal, int count)
+        internal static FaceHasCastingCostRecord Create(DatabaseContext databaseContext, FaceHasCastingCostTable faceHasCastingCostTable, Guid faceId, Guid manaSymbolId, int ordinal, int count)
         {
-            return new FaceHasCastingCostRecord(dataContext, faceHasCastingCostTable, faceId, manaSymbolId, ordinal, count);
+            return new FaceHasCastingCostRecord(databaseContext, faceHasCastingCostTable, faceId, manaSymbolId, ordinal, count);
         }
 
         protected override void UpdateRecord(DbCommand command)

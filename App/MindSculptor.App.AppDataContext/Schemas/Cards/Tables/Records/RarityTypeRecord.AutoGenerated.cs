@@ -13,15 +13,15 @@ namespace MindSculptor.App.AppDataContext.Schemas.Cards.Tables.Records
         public Guid Id { get; }
         public string Value { get; }
 
-        private RarityTypeRecord(DatabaseContext dataContext, RarityTypesTable rarityTypesTable, Guid id, string value) : base(dataContext, rarityTypesTable)
+        private RarityTypeRecord(DatabaseContext databaseContext, RarityTypesTable rarityTypesTable, Guid id, string value) : base(databaseContext, rarityTypesTable)
         {
             Id = id;
             Value = value;
         }
 
-        internal static RarityTypeRecord Create(DatabaseContext dataContext, RarityTypesTable rarityTypesTable, Guid id, string value)
+        internal static RarityTypeRecord Create(DatabaseContext databaseContext, RarityTypesTable rarityTypesTable, Guid id, string value)
         {
-            return new RarityTypeRecord(dataContext, rarityTypesTable, id, value);
+            return new RarityTypeRecord(databaseContext, rarityTypesTable, id, value);
         }
 
         protected override void UpdateRecord(DbCommand command)

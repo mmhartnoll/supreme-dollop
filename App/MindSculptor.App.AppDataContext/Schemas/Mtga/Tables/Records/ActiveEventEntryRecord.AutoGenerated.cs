@@ -14,16 +14,16 @@ namespace MindSculptor.App.AppDataContext.Schemas.Mtga.Tables.Records
         public Guid EventId { get; }
         public Guid ProfileId { get; }
 
-        private ActiveEventEntryRecord(DatabaseContext dataContext, ActiveEventEntriesTable activeEventEntriesTable, Guid eventEntryId, Guid eventId, Guid profileId) : base(dataContext, activeEventEntriesTable)
+        private ActiveEventEntryRecord(DatabaseContext databaseContext, ActiveEventEntriesTable activeEventEntriesTable, Guid eventEntryId, Guid eventId, Guid profileId) : base(databaseContext, activeEventEntriesTable)
         {
             EventEntryId = eventEntryId;
             EventId = eventId;
             ProfileId = profileId;
         }
 
-        internal static ActiveEventEntryRecord Create(DatabaseContext dataContext, ActiveEventEntriesTable activeEventEntriesTable, Guid eventEntryId, Guid eventId, Guid profileId)
+        internal static ActiveEventEntryRecord Create(DatabaseContext databaseContext, ActiveEventEntriesTable activeEventEntriesTable, Guid eventEntryId, Guid eventId, Guid profileId)
         {
-            return new ActiveEventEntryRecord(dataContext, activeEventEntriesTable, eventEntryId, eventId, profileId);
+            return new ActiveEventEntryRecord(databaseContext, activeEventEntriesTable, eventEntryId, eventId, profileId);
         }
 
         protected override void UpdateRecord(DbCommand command)

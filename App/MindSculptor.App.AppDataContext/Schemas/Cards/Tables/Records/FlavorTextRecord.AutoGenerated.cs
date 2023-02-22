@@ -24,15 +24,15 @@ namespace MindSculptor.App.AppDataContext.Schemas.Cards.Tables.Records
             }
         }
 
-        private FlavorTextRecord(DatabaseContext dataContext, FlavorTextTable flavorTextTable, Guid facePrintingId, string value) : base(dataContext, flavorTextTable)
+        private FlavorTextRecord(DatabaseContext databaseContext, FlavorTextTable flavorTextTable, Guid facePrintingId, string value) : base(databaseContext, flavorTextTable)
         {
             FacePrintingId = facePrintingId;
             _value = value;
         }
 
-        internal static FlavorTextRecord Create(DatabaseContext dataContext, FlavorTextTable flavorTextTable, Guid facePrintingId, string value)
+        internal static FlavorTextRecord Create(DatabaseContext databaseContext, FlavorTextTable flavorTextTable, Guid facePrintingId, string value)
         {
-            return new FlavorTextRecord(dataContext, flavorTextTable, facePrintingId, value);
+            return new FlavorTextRecord(databaseContext, flavorTextTable, facePrintingId, value);
         }
 
         protected override void UpdateRecord(DbCommand command)
